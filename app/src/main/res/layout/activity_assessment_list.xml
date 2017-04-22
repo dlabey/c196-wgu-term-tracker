@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.wgu.termtracker.AssessmentListActivity">
+    tools:context="org.wgu.termtracker.activities.AssessmentListActivity">
 
 </android.support.constraint.ConstraintLayout>

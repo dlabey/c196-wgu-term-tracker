@@ -9,22 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TermListActivity" />
-        <activity android:name=".CourseListActivity" />
-        <activity android:name=".AssessmentListActivity" />
-        <activity android:name=".CourseViewActivity" />
-        <activity android:name=".TermViewActivity" />
-        <activity android:name=".AssessmentViewActivity" />
-        <activity android:name=".AssessmentInputActivity" />
-        <activity android:name=".CourseInputActivity" />
-        <activity android:name=".TermInputActivity"></activity>
+        <activity android:name=".activities.TermListActivity" />
+        <activity android:name=".activities.CourseListActivity" />
+        <activity android:name=".activities.AssessmentListActivity" />
+        <activity android:name=".activities.CourseViewActivity" />
+        <activity android:name=".activities.TermViewActivity" />
+        <activity android:name=".activities.AssessmentViewActivity" />
+        <activity android:name=".activities.AssessmentInputActivity" />
+        <activity android:name=".activities.CourseInputActivity" />
+        <activity android:name=".activities.TermInputActivity" />
+        <activity android:name=".activities.PreferencesActivity"></activity>
     </application>
 
 </manifest>

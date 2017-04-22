@@ -1,13 +1,15 @@
-package org.wgu.termtracker;
+package org.wgu.termtracker.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class HomeActivity extends AppCompatActivity {
+import org.wgu.termtracker.R;
+
+public class CourseInputActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_course_input);
     }
 }
