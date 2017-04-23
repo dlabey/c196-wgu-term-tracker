@@ -1,15 +1,18 @@
 package org.wgu.termtracker.models;
 
-import org.wgu.termtracker.enums.AsessmentTypeEnum;
+import org.wgu.termtracker.enums.AssessmentTypeEnum;
 
 import java.util.Date;
+import java.util.List;
 
 public class AssessmentModel {
     private String title;
 
     private Date dueDate;
 
-    private AsessmentTypeEnum type;
+    private AssessmentTypeEnum type;
+
+    private List<NoteModel> notes;
 
     public String getTitle() {
         return title;
@@ -27,11 +30,19 @@ public class AssessmentModel {
         this.dueDate = dueDate;
     }
 
-    public AsessmentTypeEnum getType() {
+    public AssessmentTypeEnum getType() {
         return type;
     }
 
-    public void setType(AsessmentTypeEnum type) {
+    public void setType(AssessmentTypeEnum type) {
         this.type = type;
+    }
+
+    public List<NoteModel> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<NoteModel> notes) {
+        this.notes = notes;
     }
 }

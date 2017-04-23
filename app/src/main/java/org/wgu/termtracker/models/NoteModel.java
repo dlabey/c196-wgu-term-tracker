@@ -7,7 +7,7 @@ public class NoteModel {
 
     private String text;
 
-    private String fileName;
+    private String filename;
 
     public NoteTypeEnum getType() {
         return type;
@@ -25,11 +25,11 @@ public class NoteModel {
         this.text = text;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

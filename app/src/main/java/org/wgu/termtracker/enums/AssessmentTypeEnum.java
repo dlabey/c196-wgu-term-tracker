@@ -1,12 +1,12 @@
 package org.wgu.termtracker.enums;
 
-public enum AsessmentTypeEnum {
+public enum AssessmentTypeEnum {
     Performance(1),
     Objective(2);
 
     private final int type;
 
-    AsessmentTypeEnum(int type) {
+    AssessmentTypeEnum(int type) {
         this.type = type;
     }
 
