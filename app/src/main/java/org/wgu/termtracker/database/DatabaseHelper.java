@@ -9,6 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WGUTermTracker.db";

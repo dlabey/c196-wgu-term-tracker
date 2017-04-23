@@ -7,10 +7,13 @@ import android.view.View;
 
 import org.wgu.termtracker.R;
 
+import dagger.android.AndroidInjection;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
     }
