@@ -8,14 +8,14 @@ import org.wgu.termtracker.activities.HomeActivity;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Component;
+import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasDispatchingActivityInjector;
+import dagger.android.HasActivityInjector;
 
-public class App extends Application implements HasDispatchingActivityInjector {
+public class App extends Application implements HasActivityInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
 
     private AppComponent appComponent;
 
@@ -30,7 +30,7 @@ public class App extends Application implements HasDispatchingActivityInjector {
     }
 
     @Override
-    public DispatchingAndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingActivityInjector;
     }
 }

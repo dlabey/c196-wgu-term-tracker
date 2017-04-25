@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-class AppModule {
+public class AppModule {
 
     private final App app;
 
@@ -16,8 +16,8 @@ class AppModule {
         this.app = app;
     }
 
-    @Provides
     @Singleton
+    @Provides
     App provideApp() {
         return app;
     }
