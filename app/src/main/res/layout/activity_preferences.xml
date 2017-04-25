@@ -18,91 +18,60 @@
         tools:layout_editor_absoluteY="8dp">
 
         <TextView
-            android:id="@+id/courseAlertsLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:elevation="0dp"
-            android:text="Course Alerts"
-            android:textSize="18sp" />
+            style="@style/AppTextViewStyle"
+            android:text="Course Alerts" />
 
         <Switch
-            android:id="@+id/courseAlertsSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:id="@+id/courseAlerts"
+            style="@style/AppSwitchStyle"
             android:textOff="Off"
             android:textOn="On" />
 
         <TextView
-            android:id="@+id/courseAlertMinutesLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Minutes Before Course To Alert"
-            android:textSize="18sp" />
+            style="@style/AppTextViewStyle"
+            android:text="Minutes Before Course To Alert" />
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-            android:id="@+id/courseAlertMinutesSeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:id="@+id/courseAlertMinutes"
+            style="@style/AppDiscreetSeekBar"
             app:dsb_min="5"
             app:dsb_max="15" />
 
         <TextView
-            android:id="@+id/assessmentAlertsLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Assessment Alerts"
-            android:textSize="18sp" />
+            style="@style/AppTextViewStyle"
+            android:text="Assessment Alerts" />
 
         <Switch
-            android:id="@+id/assessmentAlertsSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:id="@+id/assessmentAlerts"
+            style="@style/AppSwitchStyle"
             android:textOff="Off"
             android:textOn="On" />
 
         <TextView
-            android:id="@+id/assessmentAlertMinutesLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Minutes Before Assessment To Alert"
-            android:textSize="18sp" />
+            style="@style/AppTextViewStyle"
+            android:text="Minutes Before Assessment To Alert" />
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-            android:id="@+id/assessmentAlertMinutesSeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:id="@+id/assessmentAlertMinutes"
+            style="@style/AppDiscreetSeekBar"
             app:dsb_min="5"
             app:dsb_max="15" />
 
         <TextView
-            android:id="@+id/sharingMethodLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Sharing Method"
-            android:textSize="18sp" />
+            style="@style/AppTextViewStyle"
+            android:text="Sharing Method" />
 
         <ToggleButton
-            android:id="@+id/sharingMethodSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:id="@+id/sharingMethod"
+            style="@style/AppToggleButton"
             android:showText="true"
             android:textOff="Email"
             android:textOn="SMS" />
 
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/AppButton"
+            android:onClick="onSaveButtonClick"
             android:text="Save" />
 
     </LinearLayout>

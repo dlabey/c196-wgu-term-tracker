@@ -1,4 +1,4 @@
-package org.wgu.termtracker.database;
+package org.wgu.termtracker.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,26 +12,26 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 @Singleton
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DBManager extends SQLiteOpenHelper implements DBContract {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WGUTermTracker.db";
 
     private static final String SQL_CREATE_ASSESSMENTS_TABLE =
-            DatabaseContract.Assessment.showCreateTable();
+            Assessment.showCreateTable();
     private static final String SQL_CREATE_ASSESSMENT_NOTES_TABLE =
-            DatabaseContract.AssessmentNote.showCreateTable();
+            AssessmentNote.showCreateTable();
     private static final String SQL_CREATE_COURSES_TABLE =
-            DatabaseContract.Course.showCreateTable();
+            Course.showCreateTable();
     private static final String SQL_CREATE_COURSE_MENTORS_TABLE =
-            DatabaseContract.CourseMentor.showCreateTable();
+            CourseMentor.showCreateTable();
     private static final String SQL_CREATE_COURSE_NOTES_TABLE =
-            DatabaseContract.CourseNote.showCreateTable();
+            CourseNote.showCreateTable();
     private static final String SQL_CREATE_NOTES_TABLE =
-            DatabaseContract.Note.showCreateTable();
+            Note.showCreateTable();
     private static final String SQL_CREATE_TERMS_TABLE =
-            DatabaseContract.Term.showCreateTable();
+            Term.showCreateTable();
 
-    public DatabaseHelper(Context context) {
+    public DBManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
