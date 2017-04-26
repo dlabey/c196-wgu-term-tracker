@@ -1,6 +1,9 @@
 package org.wgu.termtracker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.wgu.termtracker.data.PreferencesManager;
 
 import javax.inject.Singleton;
 
@@ -20,5 +23,11 @@ public class AppModule {
     @Provides
     App provideApp() {
         return app;
+    }
+
+    @Singleton
+    @Provides
+    PreferencesManager providePreferencesManager() {
+        return new PreferencesManager(app);
     }
 }

@@ -1,5 +1,7 @@
 package org.wgu.termtracker.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import org.wgu.termtracker.App;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.enums.SharingMethodEnum;
+import org.wgu.termtracker.models.PreferencesModel;
 
 import javax.inject.Inject;
 
@@ -51,19 +54,51 @@ public class PreferencesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_preferences);
         ButterKnife.bind(this);
+
+        PreferencesModel prefs = this.prefsManager.getPreferences();
+
+        courseAlerts.setChecked(prefs.isCourseAlerts());
+        courseAlertMinutes.setProgress(prefs.getCourseAlertMinutes());
+        assessmentAlerts.setChecked(prefs.isAssessmentAlerts());
+        assessmentAlertMinutes.setProgress(prefs.getAssessmentAlertMinutes());
+        sharingMethod.setChecked(prefs.getSharingMethod() == SharingMethodEnum.SMS);
     }
 
     public void onSaveButtonClick(View view) {
-        boolean isCourseAlerts = courseAlerts.isChecked();
-        int courseAlertMinutes = 10;
+        boolean isCourseAlerts = this.courseAlerts.isChecked();
+        int courseAlertMinutes = this.courseAlertMinutes.getProgress();
         boolean isAssessmentAlerts = assessmentAlerts.isChecked();
-        int assessmentAlertMinutes = 10;
-        SharingMethodEnum sharingMethod = SharingMethodEnum.EMAIL;
+        int assessmentAlertMinutes = this.assessmentAlertMinutes.getProgress();
+        SharingMethodEnum sharingMethod = SharingMethodEnum.valueOf(this.sharingMethod.getText()
+                .toString().toUpperCase());
 
         boolean result = this.prefsManager.setPreferences(isCourseAlerts, courseAlertMinutes,
                 isAssessmentAlerts, assessmentAlertMinutes, sharingMethod);
 
+        saveAlert(result);
+
         Log.d(TAG, prefsManager.toString());
         Log.d(TAG, String.valueOf(result));
+        Log.d(TAG, String.valueOf(prefsManager.getPreferences().getSharingMethod().getValue()));
+    }
+
+    protected void saveAlert(boolean result) {
+        AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this).create();
+        alertDialog.setTitle("Notice");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }
+        );
+
+        if (result) {
+            alertDialog.setMessage("Preferences saved");
+        } else {
+            alertDialog.setMessage("Error, preferences not saved");
+        }
+
+        alertDialog.show();
     }
 }
