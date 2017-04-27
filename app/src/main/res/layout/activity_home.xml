@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context="org.wgu.termtracker.activities.HomeActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/actionBar"
+        style="@style/AppActionBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        app:title="WGU Term Tracker"
+        app:titleTextColor="@android:color/white"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -36,19 +49,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="184dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="43dp"
-        android:layout_height="42dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="onPreferencesClick"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_preferences"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
 
 </android.support.constraint.ConstraintLayout>
