@@ -32,19 +32,19 @@ public class PreferencesActivity extends AppCompatActivity {
     @Inject
     PreferencesManager prefsManager;
 
-    @BindView(R.id.courseAlerts)
+    @BindView(R.id.courseAlertsSwitch)
     Switch courseAlerts;
 
-    @BindView(R.id.courseAlertMinutes)
+    @BindView(R.id.courseAlertMinutesDiscreteSeekBar)
     DiscreteSeekBar courseAlertMinutes;
 
-    @BindView(R.id.assessmentAlerts)
+    @BindView(R.id.assessmentAlertsSwitch)
     Switch assessmentAlerts;
 
-    @BindView(R.id.assessmentAlertMinutes)
+    @BindView(R.id.assessmentAlertMinutesDiscreteSeekBar)
     DiscreteSeekBar assessmentAlertMinutes;
 
-    @BindView(R.id.sharingMethod)
+    @BindView(R.id.sharingMethodToggleButton)
     ToggleButton sharingMethod;
 
     @Override

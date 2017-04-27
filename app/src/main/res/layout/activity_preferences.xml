@@ -16,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        app:title="WGU Term Tracker"
+        app:title="Preferences"
         app:titleTextColor="@android:color/white"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
@@ -50,7 +50,7 @@
                 android:text="Course Alerts" />
 
             <Switch
-                android:id="@+id/courseAlerts"
+                android:id="@+id/courseAlertsSwitch"
                 style="@style/AppSwitchStyle"
                 android:textOff="Off"
                 android:textOn="On" />
@@ -60,7 +60,7 @@
                 android:text="Minutes Before Course To Alert" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/courseAlertMinutes"
+                android:id="@+id/courseAlertMinutesDiscreteSeekBar"
                 style="@style/AppDiscreteSeekBar"
                 app:dsb_max="15"
                 app:dsb_min="5" />
@@ -70,7 +70,7 @@
                 android:text="Assessment Alerts" />
 
             <Switch
-                android:id="@+id/assessmentAlerts"
+                android:id="@+id/assessmentAlertsSwitch"
                 style="@style/AppSwitchStyle"
                 android:textOff="Off"
                 android:textOn="On" />
@@ -80,7 +80,7 @@
                 android:text="Minutes Before Assessment To Alert" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/assessmentAlertMinutes"
+                android:id="@+id/assessmentAlertMinutesDiscreteSeekBar"
                 style="@style/AppDiscreteSeekBar"
                 app:dsb_max="15"
                 app:dsb_min="5" />
@@ -90,7 +90,7 @@
                 android:text="Sharing Method" />
 
             <ToggleButton
-                android:id="@+id/sharingMethod"
+                android:id="@+id/sharingMethodToggleButton"
                 style="@style/AppToggleButton"
                 android:showText="true"
                 android:textOff="Email"
