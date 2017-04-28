@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 
 import butterknife.BindView;
@@ -54,6 +55,8 @@ public class TermListActivity extends AppCompatActivity {
 
     protected void onAddTermClick(View view) {
         Intent intent = new Intent(this, TermInputActivity.class);
+
+        intent.putExtra(Constants.TYPE, Constants.ADD);
 
         startActivity(intent);
     }
