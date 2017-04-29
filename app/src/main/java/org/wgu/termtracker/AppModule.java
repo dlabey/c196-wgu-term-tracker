@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.wgu.termtracker.data.PreferencesManager;
+import org.wgu.termtracker.data.TermManager;
 
 import javax.inject.Singleton;
 
@@ -30,4 +31,8 @@ public class AppModule {
     PreferencesManager providePreferencesManager() {
         return new PreferencesManager(app);
     }
+
+    @Singleton
+    @Provides
+    TermManager provideTermManager() { return new TermManager(app.getBaseContext()); }
 }

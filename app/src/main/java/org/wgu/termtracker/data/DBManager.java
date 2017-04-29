@@ -3,6 +3,7 @@ package org.wgu.termtracker.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -13,23 +14,25 @@ import javax.inject.Singleton;
 
 @Singleton
 public class DBManager extends SQLiteOpenHelper implements DBContract {
+    private static final String TAG = "DBManager";
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WGUTermTracker.db";
 
     private static final String SQL_CREATE_ASSESSMENTS_TABLE =
-            Assessment.showCreateTable();
+            AssessmentEntry.showCreateTable();
     private static final String SQL_CREATE_ASSESSMENT_NOTES_TABLE =
-            AssessmentNote.showCreateTable();
+            AssessmentNoteEntry.showCreateTable();
     private static final String SQL_CREATE_COURSES_TABLE =
-            Course.showCreateTable();
+            CourseEntry.showCreateTable();
     private static final String SQL_CREATE_COURSE_MENTORS_TABLE =
-            CourseMentor.showCreateTable();
+            CourseMentorEntry.showCreateTable();
     private static final String SQL_CREATE_COURSE_NOTES_TABLE =
-            CourseNote.showCreateTable();
+            CourseNoteEntry.showCreateTable();
     private static final String SQL_CREATE_NOTES_TABLE =
-            Note.showCreateTable();
+            NoteEntry.showCreateTable();
     private static final String SQL_CREATE_TERMS_TABLE =
-            Term.showCreateTable();
+            TermEntry.showCreateTable();
 
     public DBManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,7 +57,7 @@ public class DBManager extends SQLiteOpenHelper implements DBContract {
     }
 
     static String generateCreateSql(String tableName, Map<String, String> columns) {
-        String createTable = String.format("CREATE TABLE %s", tableName);
+        String createTable = String.format("CREATE TABLE %s (", tableName);
 
         String[] createColumnsArr = new String[columns.size()];
         Iterator it = columns.entrySet().iterator();
@@ -68,8 +71,11 @@ public class DBManager extends SQLiteOpenHelper implements DBContract {
             i++;
         }
 
-        String createColumns = StringUtils.join(createColumnsArr, ",%n");
+        String createColumns = StringUtils.join(createColumnsArr, ",\n");
+        String sql = String.format("%s%n%s)", createTable, createColumns);
 
-        return String.format("%s,%n%s", createTable, createColumns);
+        Log.d(TAG, sql);
+
+        return sql;
     }
 }

@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 @Singleton
 interface DBContract {
 
-    static class Assessment implements BaseColumns {
+    static class AssessmentEntry implements BaseColumns {
         static final String TABLE_NAME = "assessments";
         static final String COLUMN_NAME_TITLE = "title";
         static final String COLUMN_NAME_DUE_DATE = "due_date";
@@ -30,7 +30,7 @@ interface DBContract {
         }
     }
 
-    static class AssessmentNote implements BaseColumns {
+    static class AssessmentNoteEntry implements BaseColumns {
         static final String TABLE_NAME = "assessment_notes";
         static final String COLUMN_NAME_ASSESSMENT_ID = "assessment_id";
         static final String COLUMN_NAME_NOTE_ID = "note_id";
@@ -46,7 +46,7 @@ interface DBContract {
         }
     }
 
-    static class Course implements BaseColumns {
+    static class CourseEntry implements BaseColumns {
         static final String TABLE_NAME = "courses";
         static final String COLUMN_NAME_TITLE = "title";
         static final String COLUMN_NAME_START_DATE = "start_date";
@@ -70,7 +70,7 @@ interface DBContract {
         }
     }
 
-    static class CourseMentor implements BaseColumns {
+    static class CourseMentorEntry implements BaseColumns {
         static final String TABLE_NAME = "course_mentors";
         static final String COLUMN_NAME_NAME = "name";
         static final String COLUMN_NAME_PHONE_NUMBER = "phone_number";
@@ -90,7 +90,7 @@ interface DBContract {
         }
     }
 
-    static class CourseNote implements BaseColumns {
+    static class CourseNoteEntry implements BaseColumns {
         static final String TABLE_NAME = "course_notes";
         static final String COLUMN_NAME_COURSE_ID = "course_id";
         static final String COLUMN_NAME_NOTE_ID = "note_id";
@@ -106,7 +106,7 @@ interface DBContract {
         }
     }
 
-    static class Note implements BaseColumns {
+    static class NoteEntry implements BaseColumns {
         static final String TABLE_NAME = "notes";
         static final String COLUMN_NAME_TYPE = "type";
         static final String COLUMN_NAME_TEXT = "text";
@@ -124,9 +124,9 @@ interface DBContract {
         }
     }
 
-    static class Term implements BaseColumns {
-        static final String TABLE_NAME = "notes";
-        static final String COLUMN_NAME_TITLE = "type";
+    static class TermEntry implements BaseColumns {
+        static final String TABLE_NAME = "terms";
+        static final String COLUMN_NAME_TITLE = "title";
         static final String COLUMN_NAME_START_DATE = "start_date";
         static final String COLUMN_NAME_END_DATE = "end_date";
 

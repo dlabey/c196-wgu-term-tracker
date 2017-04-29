@@ -1,6 +1,9 @@
 package org.wgu.termtracker.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +23,13 @@ import com.mobsandgeeks.saripaar.annotation.Pattern;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
+import org.wgu.termtracker.data.TermManager;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +38,9 @@ import dagger.android.AndroidInjection;
 public class TermInputActivity extends AppCompatActivity implements ValidationListener {
 
     private static final String TAG = "TermInputActivity";
+
+    @Inject
+    TermManager termManager;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -133,16 +142,25 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
 
     @Override
     public void onValidationSucceeded() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
         try {
-            Date startDateFormatted = simpleDateFormat.parse(startDate.getText().toString());
-            Date endDateFormatted = simpleDateFormat.parse(endDate.getText().toString());
+            Date startDateParsed = simpleDateFormat.parse(startDate.getText().toString());
+            Date endDateParsed = simpleDateFormat.parse(endDate.getText().toString());
 
-            if (startDateFormatted.after(endDateFormatted)) {
+            if (startDateParsed.after(endDateParsed)) {
                 startDate.setError("Start Date cannot be after End Date");
             } else {
                 startDate.setError(null);
+
+                switch (type) {
+                    case Constants.ADD:
+                        long newTermId = termManager.createTerm(title.getText().toString(),
+                                startDateParsed, endDateParsed);
+
+                        saveAlert(newTermId > 0);
+                        break;
+                }
             }
         } catch (ParseException ex) {
             Log.e(TAG, ex.getMessage());
@@ -158,5 +176,31 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
 
             ((EditText) view).setError(message);
         }
+    }
+
+    protected void saveAlert(final boolean result) {
+        AlertDialog alertDialog = new AlertDialog.Builder(TermInputActivity.this).create();
+        alertDialog.setTitle("Notice");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        if (result) {
+                            Intent intent = new Intent(TermInputActivity.this, TermListActivity.class);
+
+                            startActivity(intent);
+                        }
+                    }
+                }
+        );
+
+        if (result) {
+            alertDialog.setMessage("Term saved");
+        } else {
+            alertDialog.setMessage("Error, term not saved");
+        }
+
+        alertDialog.show();
     }
 }
