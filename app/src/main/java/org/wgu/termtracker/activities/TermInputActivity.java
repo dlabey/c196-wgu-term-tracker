@@ -36,7 +36,6 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
 public class TermInputActivity extends AppCompatActivity implements ValidationListener {
-
     private static final String TAG = "TermInputActivity";
 
     @Inject
