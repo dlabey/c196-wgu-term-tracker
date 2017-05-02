@@ -42,6 +42,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Title" />
+
+            <TextView
+                android:id="@+id/titleTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
+
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Start Date" />
+
+            <TextView
+                android:id="@+id/startDateTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
+
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="End Date" />
+
+            <TextView
+                android:id="@+id/endDateTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
+
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Courses" />
         </LinearLayout>
 
     </ScrollView>

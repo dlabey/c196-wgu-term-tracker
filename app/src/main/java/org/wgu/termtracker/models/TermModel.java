@@ -4,9 +4,10 @@ import android.icu.text.SimpleDateFormat;
 
 import org.wgu.termtracker.Constants;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TermModel {
+public class TermModel implements Serializable {
     private long termId;
 
     private String title;

@@ -41,7 +41,7 @@ public class TermListActivity extends AppCompatActivity {
     @BindView(R.id.termListView)
     ListView termList;
 
-    ArrayAdapter<TermModel> termListAdapter;
+    protected ArrayAdapter<TermModel> termListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,11 @@ public class TermListActivity extends AppCompatActivity {
 
     protected void onTermClick(int position, long id) {
         TermModel term = termListAdapter.getItem(position);
+
+        Intent intent = new Intent(getBaseContext(), TermViewActivity.class);
+
+        intent.putExtra(Constants.TERM, term);
+        startActivity(intent);
 
         Log.d(TAG, String.format("%s %s-%s", term.getTermId(), term.getStartDate(), term.getEndDate()));
     }

@@ -84,6 +84,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
     protected void saveAlert(boolean result) {
         AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this).create();
+
         alertDialog.setTitle("Notice");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
             new DialogInterface.OnClickListener() {

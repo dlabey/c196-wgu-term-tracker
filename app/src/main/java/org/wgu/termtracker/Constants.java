@@ -9,5 +9,7 @@ public interface Constants {
 
     public static String EDIT = "edit";
 
+    public static String TERM = "term";
+
     public static String TYPE = "type";
 }
