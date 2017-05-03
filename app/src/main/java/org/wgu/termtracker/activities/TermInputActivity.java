@@ -24,6 +24,7 @@ import com.mobsandgeeks.saripaar.annotation.Pattern;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.TermManager;
+import org.wgu.termtracker.models.TermModel;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -58,13 +59,15 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
     @Pattern(regex = Constants.DATE_REGEX)
     EditText endDate;
 
-    String type;
+    protected String type;
 
-    DatePickerDialog datePickerDialog;
+    protected DatePickerDialog datePickerDialog;
 
-    EditText dateDialogEditText;
+    protected EditText dateDialogEditText;
 
-    Validator validator;
+    protected Validator validator;
+
+    protected TermModel term;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +83,14 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
 
         switch (type) {
             case Constants.ADD:
-                getSupportActionBar().setTitle("Add Termz");
+                getSupportActionBar().setTitle("Add Term");
+
+                term = null;
                 break;
             case Constants.EDIT:
                 getSupportActionBar().setTitle("Edit Term");
+
+                term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
                 break;
         }
 
@@ -127,6 +134,17 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        if (term != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+
+            String startDateStr = simpleDateFormat.format(term.getStartDate());
+            String endDateStr = simpleDateFormat.format(term.getEndDate());
+
+            title.setText(term.getTitle());
+            startDate.setText(startDateStr);
+            endDate.setText(endDateStr);
+        }
     }
 
     public void onDateClick(View view) {
@@ -158,6 +176,12 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
                                 startDateParsed, endDateParsed);
 
                         saveAlert(newTermId > 0);
+                        break;
+                    case Constants.EDIT:
+                        boolean termUpdated = termManager.updateTerm(term.getTermId(),
+                                title.getText().toString(), startDateParsed, endDateParsed);
+
+                        saveAlert(termUpdated);
                         break;
                 }
             }

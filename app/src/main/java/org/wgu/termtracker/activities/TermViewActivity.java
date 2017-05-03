@@ -27,8 +27,6 @@ import dagger.android.AndroidInjection;
 public class TermViewActivity extends AppCompatActivity {
     private static final String TAG = "TermViewActivity";
 
-    protected TermModel term;
-
     @Inject
     TermManager termManager;
 
@@ -43,6 +41,8 @@ public class TermViewActivity extends AppCompatActivity {
 
     @BindView(R.id.endDateTextView)
     TextView endDate;
+
+    protected TermModel term;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +122,12 @@ public class TermViewActivity extends AppCompatActivity {
     }
 
     protected void onEditClick(View view) {
+        Intent intent = new Intent(TermViewActivity.this, TermInputActivity.class);
+
+        intent.putExtra(Constants.TYPE, Constants.EDIT);
+        intent.putExtra(Constants.TERM, term);
+        startActivity(intent);
+
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
     }
 }
