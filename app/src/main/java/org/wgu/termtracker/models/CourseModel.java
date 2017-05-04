@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 public class CourseModel {
+    private long courseId;
+
     private String title;
 
     private Date startDate;
@@ -19,6 +21,14 @@ public class CourseModel {
     private List<CourseMentorModel> mentors;
 
     private List<NoteModel> notes;
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
     public String getTitle() {
         return title;

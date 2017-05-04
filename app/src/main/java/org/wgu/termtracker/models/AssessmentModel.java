@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AssessmentModel {
+    private long assessmentId;
+
     private String title;
 
     private Date dueDate;
@@ -13,6 +15,14 @@ public class AssessmentModel {
     private AssessmentTypeEnum type;
 
     private List<NoteModel> notes;
+
+    public long getAssessmentId() {
+        return assessmentId;
+    }
+
+    public void setAssessmentId(long assessmentId) {
+        this.assessmentId = assessmentId;
+    }
 
     public String getTitle() {
         return title;

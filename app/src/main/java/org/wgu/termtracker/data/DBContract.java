@@ -12,19 +12,19 @@ interface DBContract {
 
     static class AssessmentEntry implements BaseColumns {
         static final String TABLE_NAME = "assessments";
+        static final String COLUMN_NAME_COURSE_ID = "course_id";
         static final String COLUMN_NAME_TITLE = "title";
         static final String COLUMN_NAME_DUE_DATE = "due_date";
         static final String COLUMN_NAME_TYPE = "type";
-        static final String COLUMN_NAME_COURSE_ID = "course_id";
 
         static String showCreateTable() {
             HashMap<String, String> columns = new LinkedHashMap<>();
 
             columns.put(BaseColumns._ID, "INTEGER PRIMARY KEY");
+            columns.put(COLUMN_NAME_COURSE_ID, "INTEGER");
             columns.put(COLUMN_NAME_TITLE, "TEXT");
             columns.put(COLUMN_NAME_DUE_DATE, "TEXT");
             columns.put(COLUMN_NAME_TYPE, "INTEGER");
-            columns.put(COLUMN_NAME_COURSE_ID, "INTEGER");
 
             return DBManager.generateCreateSql(TABLE_NAME, columns);
         }
@@ -48,23 +48,24 @@ interface DBContract {
 
     static class CourseEntry implements BaseColumns {
         static final String TABLE_NAME = "courses";
+        static final String COLUMN_NAME_TERM_ID = "term_id";
         static final String COLUMN_NAME_TITLE = "title";
         static final String COLUMN_NAME_START_DATE = "start_date";
         static final String COLUMN_NAME_ANTICIPATED_END_DATE =  "anticipated_end_date";
         static final String COLUMN_NAME_DUE_DATE = "due_date";
         static final String COLUMN_NAME_STATUS = "status";
-        static final String COLUMN_NAME_TERM_ID = "term_id";
+
 
         static String showCreateTable() {
             HashMap<String, String> columns = new LinkedHashMap<>();
 
             columns.put(BaseColumns._ID, "INTEGER PRIMARY KEY");
+            columns.put(COLUMN_NAME_TERM_ID, "INTEGER");
             columns.put(COLUMN_NAME_TITLE, "TEXT");
             columns.put(COLUMN_NAME_START_DATE, "TEXT");
             columns.put(COLUMN_NAME_ANTICIPATED_END_DATE, "TEXT");
             columns.put(COLUMN_NAME_DUE_DATE, "TEXT");
             columns.put(COLUMN_NAME_STATUS, "INTEGER");
-            columns.put(COLUMN_NAME_TERM_ID, "INTEGER");
 
             return DBManager.generateCreateSql(TABLE_NAME, columns);
         }
@@ -110,7 +111,7 @@ interface DBContract {
         static final String TABLE_NAME = "notes";
         static final String COLUMN_NAME_TYPE = "type";
         static final String COLUMN_NAME_TEXT = "text";
-        static final String COLUMN_NAME_FILENAME = "filename";
+        static final String COLUMN_NAME_PHOTO_URI = "photo_uri";
 
         static String showCreateTable() {
             HashMap<String, String> columns = new LinkedHashMap<>();
@@ -118,7 +119,7 @@ interface DBContract {
             columns.put(BaseColumns._ID, "INTEGER PRIMARY KEY");
             columns.put(COLUMN_NAME_TYPE, "INTEGER");
             columns.put(COLUMN_NAME_TEXT, "TEXT");
-            columns.put(COLUMN_NAME_FILENAME, "TEXT");
+            columns.put(COLUMN_NAME_PHOTO_URI, "TEXT");
 
             return DBManager.generateCreateSql(TABLE_NAME, columns);
         }

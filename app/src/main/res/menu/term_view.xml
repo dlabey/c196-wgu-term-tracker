@@ -20,4 +20,10 @@
         android:title="List Terms"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/addTerm"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add Course"
+        app:showAsAction="ifRoom" />
+
 </menu>
