@@ -72,20 +72,20 @@ interface DBContract {
     }
 
     static class CourseMentorEntry implements BaseColumns {
+        static final String COLUMN_NAME_COURSE_ID = "course_id";
         static final String TABLE_NAME = "course_mentors";
         static final String COLUMN_NAME_NAME = "name";
         static final String COLUMN_NAME_PHONE_NUMBER = "phone_number";
         static final String COLUMN_NAME_EMAIL = "email";
-        static final String COLUMN_NAME_COURSE_ID = "course_id";
 
         static String showCreateTable() {
             HashMap<String, String> columns = new LinkedHashMap<>();
 
             columns.put(BaseColumns._ID, "INTEGER PRIMARY KEY");
+            columns.put(COLUMN_NAME_COURSE_ID, "INTEGER");
             columns.put(COLUMN_NAME_NAME, "TEXT");
             columns.put(COLUMN_NAME_PHONE_NUMBER, "TEXT");
             columns.put(COLUMN_NAME_EMAIL, "TEXT");
-            columns.put(COLUMN_NAME_COURSE_ID, "INTEGER");
 
             return DBManager.generateCreateSql(TABLE_NAME, columns);
         }

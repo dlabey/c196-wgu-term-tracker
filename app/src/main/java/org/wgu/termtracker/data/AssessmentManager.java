@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class AssessmentManager extends DBManager implements AsessmentContract {
     private static final String TAG = "AsessmentManager";
 
@@ -39,7 +42,7 @@ public class AssessmentManager extends DBManager implements AsessmentContract {
         values.put(AssessmentEntry.COLUMN_NAME_DUE_DATE, dueDateFormatted);
         values.put(AssessmentEntry.COLUMN_NAME_TYPE, type.getValue());
 
-        return db.insertOrThrow(AssessmentEntry.TABLE_NAME, null, values);
+        return db.insert(AssessmentEntry.TABLE_NAME, null, values);
     }
 
     public boolean updateAssessment(long assessmentId, String title, Date dueDate,

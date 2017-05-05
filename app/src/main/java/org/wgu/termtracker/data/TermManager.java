@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class TermManager extends DBManager implements TermContract {
     private static final String TAG = "TermManager";
 

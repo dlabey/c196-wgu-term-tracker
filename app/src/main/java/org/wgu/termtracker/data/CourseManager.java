@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class CourseManager extends DBManager implements CourseContract {
     private static final String TAG = "CourseManager";
 
@@ -43,7 +46,7 @@ public class CourseManager extends DBManager implements CourseContract {
         values.put(CourseEntry.COLUMN_NAME_DUE_DATE, dueDateFormatted);
         values.put(CourseEntry.COLUMN_NAME_STATUS, status.getValue());
 
-        return db.insertOrThrow(CourseEntry.TABLE_NAME, null, values);
+        return db.insert(CourseEntry.TABLE_NAME, null, values);
     }
 
     public boolean updateCourse(long courseId, String title, Date startDate,
