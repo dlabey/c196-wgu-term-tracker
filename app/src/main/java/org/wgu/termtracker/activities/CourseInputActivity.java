@@ -171,7 +171,17 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         validator.setValidationListener(this);
 
         if (course != null) {
-            // TODO: for edit course
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+
+            String startDateStr = simpleDateFormat.format(course.getStartDate());
+            String anticipatedEndDateStr = simpleDateFormat.format(course.getAnticipatedEndDate());
+            String dueDateStr = simpleDateFormat.format(course.getDueDate());
+
+            title.setText(course.getTitle());
+            startDate.setText(startDateStr);
+            anticipatedEndDate.setText(anticipatedEndDateStr);
+            dueDate.setText(dueDateStr);
+            status.setSelection(course.getStatus().getValue());
         }
     }
 
@@ -211,6 +221,12 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
                         saveAlert(newCourseId > 0);
                         break;
                     case Constants.EDIT:
+                        boolean courseUpdated = courseManager.updateCourse(course.getCourseId(),
+                                title.getText().toString(), startDateParsed,
+                                anticipatedEndDateParsed, dueDateParsed,
+                                (CourseStatusEnum) status.getSelectedItem());
+
+                        saveAlert(courseUpdated);
                         break;
                 }
             }
@@ -244,9 +260,10 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
 
                         if (result) {
                             Intent intent = new Intent(CourseInputActivity.this,
-                                    TermViewActivity.class);
+                                    CourseViewActivity.class);
 
                             intent.putExtra(Constants.TERM, term);
+                            intent.putExtra(Constants.COURSE, course);
 
                             startActivity(intent);
                         }

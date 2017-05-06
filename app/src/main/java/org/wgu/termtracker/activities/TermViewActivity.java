@@ -146,11 +146,11 @@ public class TermViewActivity extends AppCompatActivity {
                         //TODO: Check if there are any courses
                         termManager.deleteTerm(term.getTermId());
 
-                        finish();
-
                         Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
 
                         startActivity(intent);
+
+                        finish();
                     }
                 }
         );
@@ -160,10 +160,11 @@ public class TermViewActivity extends AppCompatActivity {
     }
 
     protected void onEditClick(View view) {
-        Intent intent = new Intent(TermViewActivity.this, TermInputActivity.class);
+        Intent intent = new Intent(this, TermInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.EDIT);
         intent.putExtra(Constants.TERM, term);
+
         startActivity(intent);
 
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
@@ -172,10 +173,11 @@ public class TermViewActivity extends AppCompatActivity {
     protected void onCourseClick(int position, long id) {
         CourseModel course = courseListAdapter.getItem(position);
 
-        Intent intent = new Intent(getBaseContext(), CourseViewActivity.class);
+        Intent intent = new Intent(this, CourseViewActivity.class);
 
         intent.putExtra(Constants.TERM, term);
         intent.putExtra(Constants.COURSE, course);
+
         startActivity(intent);
 
         Log.d(TAG, String.format("%s %s-%s", term.getTermId(), term.getStartDate(), term.getEndDate()));

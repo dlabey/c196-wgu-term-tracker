@@ -39,52 +39,52 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/AppTextViewStyle"
-            android:text="Title" />
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Title" />
 
-        <TextView
-            android:id="@+id/titleTextView"
-            style="@style/AppTextViewContentStyle"
-            android:text="" />
+            <TextView
+                android:id="@+id/titleTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
 
-        <TextView
-            style="@style/AppTextViewStyle"
-            android:text="Start Date" />
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Start Date" />
 
-        <TextView
-            android:id="@+id/startDateTextView"
-            style="@style/AppTextViewContentStyle"
-            android:text="" />
+            <TextView
+                android:id="@+id/startDateTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
 
-        <TextView
-            style="@style/AppTextViewStyle"
-            android:text="End Date" />
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="End Date" />
 
-        <TextView
-            android:id="@+id/endDateTextView"
-            style="@style/AppTextViewContentStyle"
-            android:text="" />
+            <TextView
+                android:id="@+id/endDateTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
 
-        <TextView
-            style="@style/AppTextViewStyle"
-            android:text="Courses" />
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Courses" />
 
-        <org.wgu.termtracker.layout.NonScrollListView
-            android:id="@+id/courseListView"
-            style="@style/AppInnerListViewStyle" />
+            <org.wgu.termtracker.layout.NonScrollListView
+                android:id="@+id/courseListView"
+                style="@style/AppInnerListViewStyle" />
 
-        <TextView
-            style="@style/AppTextViewStyle"
-            android:text="Course Mentors" />
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Course Mentors" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

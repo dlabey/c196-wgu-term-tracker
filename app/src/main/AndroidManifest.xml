@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.TermListActivity" />
-        <activity android:name=".activities.CourseListActivity" />
         <activity android:name=".activities.AssessmentListActivity" />
         <activity android:name=".activities.CourseViewActivity" />
         <activity android:name=".activities.TermViewActivity" />

@@ -7,21 +7,24 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ContributesAndroidInjectorModule {
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract HomeActivity contributeHomeActivityInjector();
 
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract PreferencesActivity contributePreferencesActivityInjector();
 
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract TermListActivity contributeTermListActivity();
 
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract TermInputActivity contributeTermInputActivity();
 
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract TermViewActivity contributeTermViewActivity();
 
-    @ContributesAndroidInjector(modules = {})
+    @ContributesAndroidInjector
     public abstract CourseInputActivity contributeCourseInputActivity();
+
+    @ContributesAndroidInjector
+    public abstract CourseViewActivity contributeCourseViewActivity();
 }

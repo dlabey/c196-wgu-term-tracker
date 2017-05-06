@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/editCourse"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit Course"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/deleteCourse"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Delete Course"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/courseTerm"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Course Term"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/addAssessment"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add Assessment"
+        app:showAsAction="never" />
+
+</menu>
