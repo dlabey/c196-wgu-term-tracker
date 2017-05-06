@@ -138,6 +138,9 @@ public class CourseManager extends DBManager implements CourseContract {
         }
         cursor.close();
 
+        Log.d(TAG, "Courses");
+        Log.d(TAG, String.valueOf(courses.size()));
+
         return courses;
     }
 }

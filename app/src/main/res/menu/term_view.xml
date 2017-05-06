@@ -6,24 +6,24 @@
         android:id="@+id/editTerm"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit Term"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/deleteTerm"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="Delete Term"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/listTerms"
         android:icon="@android:drawable/ic_menu_agenda"
         android:title="List Terms"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/addTerm"
+        android:id="@+id/addCourse"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add Course"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

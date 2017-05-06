@@ -55,6 +55,6 @@ public class TermModel implements Serializable {
         String startDate = simpleDateFormat.format(this.startDate);
         String endDate = simpleDateFormat.format(this.endDate);
 
-        return String.format("%s @ %s - %s", title, startDate, endDate);
+        return String.format("%s%n%s - %s", title, startDate, endDate);
     }
 }

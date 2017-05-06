@@ -221,7 +221,7 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
         if (result) {
             alertDialog.setMessage("Term saved");
         } else {
-            alertDialog.setMessage("Error, term not saved");
+            alertDialog.setMessage("Error, Term not saved");
         }
 
         alertDialog.show();

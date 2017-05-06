@@ -13,7 +13,7 @@
         <item name="android:layout_height">56dp</item>
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation">4dp</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:visibility">visible</item>
     </style>
 
@@ -54,9 +54,16 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppSpinnerStyle">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="AppSpinnerStyle" parent="android:Widget.Material.Spinner">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="AppInnerListViewStyle" parent="android:Widget.Material.ListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="AppButton">

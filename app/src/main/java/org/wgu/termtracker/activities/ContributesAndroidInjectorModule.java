@@ -21,4 +21,7 @@ public abstract class ContributesAndroidInjectorModule {
 
     @ContributesAndroidInjector(modules = {})
     public abstract TermViewActivity contributeTermViewActivity();
+
+    @ContributesAndroidInjector(modules = {})
+    public abstract CourseInputActivity contributeCourseInputActivity();
 }

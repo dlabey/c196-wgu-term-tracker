@@ -3,7 +3,6 @@ package org.wgu.termtracker.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,12 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
+import org.wgu.termtracker.data.CourseManager;
 import org.wgu.termtracker.data.TermManager;
+import org.wgu.termtracker.layout.NonScrollListView;
+import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.TermModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,6 +36,9 @@ public class TermViewActivity extends AppCompatActivity {
     @Inject
     TermManager termManager;
 
+    @Inject
+    CourseManager courseManager;
+
     @BindView(R.id.actionBar)
     Toolbar actionBar;
 
@@ -42,7 +51,12 @@ public class TermViewActivity extends AppCompatActivity {
     @BindView(R.id.endDateTextView)
     TextView endDate;
 
+    @BindView(R.id.courseListView)
+    NonScrollListView courseList;
+
     protected TermModel term;
+
+    protected ArrayAdapter<CourseModel> courseListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +78,18 @@ public class TermViewActivity extends AppCompatActivity {
         title.setText(term.getTitle());
         startDate.setText(startDateStr);
         endDate.setText(endDateStr);
+
+        List<CourseModel> courses = courseManager.listCourses(term.getTermId());
+
+        courseListAdapter = new ArrayAdapter<CourseModel>(this, android.R.layout.simple_list_item_1,
+                courses);
+        courseList.setAdapter(courseListAdapter);
+        courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TermViewActivity.this.onCourseClick(position, id);
+            }
+        });
     }
 
     @Override
@@ -75,6 +101,8 @@ public class TermViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.editTerm:
                 this.onEditClick(item.getActionView());
@@ -83,7 +111,15 @@ public class TermViewActivity extends AppCompatActivity {
                 this.onDeleteClick(item.getActionView());
                 break;
             case R.id.listTerms:
-                Intent intent = new Intent(this, TermListActivity.class);
+                 intent = new Intent(this, TermListActivity.class);
+
+                startActivity(intent);
+                break;
+            case R.id.addCourse:
+                intent = new Intent(this, CourseInputActivity.class);
+
+                intent.putExtra(Constants.TYPE, Constants.ADD);
+                intent.putExtra(Constants.TERM, term);
 
                 startActivity(intent);
                 break;
@@ -110,6 +146,8 @@ public class TermViewActivity extends AppCompatActivity {
                         //TODO: Check if there are any courses
                         termManager.deleteTerm(term.getTermId());
 
+                        finish();
+
                         Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
 
                         startActivity(intent);
@@ -129,5 +167,17 @@ public class TermViewActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
+    }
+
+    protected void onCourseClick(int position, long id) {
+        CourseModel course = courseListAdapter.getItem(position);
+
+        Intent intent = new Intent(getBaseContext(), CourseViewActivity.class);
+
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        startActivity(intent);
+
+        Log.d(TAG, String.format("%s %s-%s", term.getTermId(), term.getStartDate(), term.getEndDate()));
     }
 }

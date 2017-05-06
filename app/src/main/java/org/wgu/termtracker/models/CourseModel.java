@@ -1,11 +1,15 @@
 package org.wgu.termtracker.models;
 
+import android.icu.text.SimpleDateFormat;
+
+import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.enums.CourseStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class CourseModel {
+public class CourseModel implements Serializable {
     private long courseId;
 
     private String title;
@@ -84,5 +88,15 @@ public class CourseModel {
 
     public void setNotes(List<NoteModel> notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+
+        String startDate = simpleDateFormat.format(this.startDate);
+        String dueDate = simpleDateFormat.format(this.dueDate);
+
+        return String.format("%s%n%s - (Due) %s", title, startDate, dueDate);
     }
 }

@@ -82,8 +82,8 @@
                 android:text="Status" />
 
             <Spinner
-                style="@style/AppSpinnerStyle"
-                android:id="@+id/statusSpinner" />
+                android:id="@+id/statusSpinner"
+                style="@style/AppSpinnerStyle" />
 
             <Button
                 android:id="@+id/saveButton"

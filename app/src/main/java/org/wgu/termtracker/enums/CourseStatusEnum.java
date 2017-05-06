@@ -1,9 +1,12 @@
 package org.wgu.termtracker.enums;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public enum CourseStatusEnum {
+    SELECT(0),
     IN_PROGRESS(1),
     COMPLETED(2),
     DROPPED(3),
@@ -25,6 +28,11 @@ public enum CourseStatusEnum {
 
     public int getValue() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.capitalize(this.name().replaceAll("_", " ").toLowerCase());
     }
 
     public static CourseStatusEnum valueOf(int status) {
