@@ -21,6 +21,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/addCourseMentor"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add Course Mentor"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/addAssessment"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add Assessment"

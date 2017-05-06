@@ -1,6 +1,12 @@
 package org.wgu.termtracker.models;
 
-public class CourseMentorModel {
+import android.icu.text.SimpleDateFormat;
+
+import org.wgu.termtracker.Constants;
+
+import java.io.Serializable;
+
+public class CourseMentorModel implements Serializable {
     private String name;
 
     private String phoneNumber;
@@ -29,5 +35,10 @@ public class CourseMentorModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s%n%s%n%s", name, phoneNumber, email);
     }
 }

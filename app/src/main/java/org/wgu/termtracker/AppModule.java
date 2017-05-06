@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.wgu.termtracker.data.CourseManager;
+import org.wgu.termtracker.data.CourseMentorManager;
 import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.data.TermManager;
 
@@ -40,4 +41,10 @@ public class AppModule {
     @Singleton
     @Provides
     CourseManager provideCourseManager() { return new CourseManager(app.getBaseContext()); }
+
+    @Singleton
+    @Provides
+    CourseMentorManager provideCourseMentorManager() {
+        return new CourseMentorManager(app.getBaseContext());
+    }
 }

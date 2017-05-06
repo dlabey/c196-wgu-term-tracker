@@ -10,13 +10,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.CourseManager;
+import org.wgu.termtracker.data.CourseMentorManager;
+import org.wgu.termtracker.layout.NonScrollListView;
+import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.TermModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,6 +36,9 @@ public class CourseViewActivity extends AppCompatActivity {
 
     @Inject
     CourseManager courseManager;
+
+    @Inject
+    CourseMentorManager courseMentorManager;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -48,9 +58,14 @@ public class CourseViewActivity extends AppCompatActivity {
     @BindView(R.id.statusTextView)
     TextView status;
 
+    @BindView(R.id.courseMentorListView)
+    NonScrollListView courseMentorList;
+
     protected TermModel term;
 
     protected CourseModel course;
+
+    protected ArrayAdapter<CourseMentorModel> courseMentorListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +91,19 @@ public class CourseViewActivity extends AppCompatActivity {
         anticipatedEndDate.setText(anticipatedEndDateStr);
         dueDate.setText(dueDateStr);
         status.setText(course.getStatus().toString());
+
+        List<CourseMentorModel> courseMentors = courseMentorManager.listCourseMentors(
+                course.getCourseId());
+
+        courseMentorListAdapter = new ArrayAdapter<CourseMentorModel>(this,
+                android.R.layout.simple_list_item_1, courseMentors);
+        courseMentorList.setAdapter(courseMentorListAdapter);
+        courseMentorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CourseViewActivity.this.onCourseMentorClick(position, id);
+            }
+        });
     }
 
     @Override
@@ -100,6 +128,15 @@ public class CourseViewActivity extends AppCompatActivity {
                 intent = new Intent(this, TermViewActivity.class);
 
                 intent.putExtra(Constants.TERM, term);
+
+                startActivity(intent);
+                break;
+            case R.id.addCourseMentor:
+                intent = new Intent(this, CourseMentorInputActivity.class);
+
+                intent.putExtra(Constants.TYPE, Constants.ADD);
+                intent.putExtra(Constants.TERM, term);
+                intent.putExtra(Constants.COURSE, course);
 
                 startActivity(intent);
                 break;
@@ -155,7 +192,7 @@ public class CourseViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
     }
 
-    protected void onCourseClick(int position, long id) {
+    protected void onCourseMentorClick(int position, long id) {
         Log.d(TAG, String.format("%s %s-%s", term.getTermId(), term.getStartDate(), term.getEndDate()));
     }
 }

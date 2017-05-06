@@ -88,7 +88,7 @@ public class CourseManager extends DBManager implements CourseContract {
         String[] projection = { BaseColumns._ID, CourseEntry.COLUMN_NAME_TITLE,
                 CourseEntry.COLUMN_NAME_TITLE, CourseEntry.COLUMN_NAME_START_DATE,
                 CourseEntry.COLUMN_NAME_ANTICIPATED_END_DATE, CourseEntry.COLUMN_NAME_DUE_DATE,
-                CourseEntry.COLUMN_NAME_STATUS};
+                CourseEntry.COLUMN_NAME_STATUS };
 
         String selection = String.format("%s = ?", CourseEntry.COLUMN_NAME_TERM_ID);
         String[] selectionArgs = { String.valueOf(termId) };

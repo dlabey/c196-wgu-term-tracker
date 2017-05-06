@@ -79,10 +79,6 @@
                 android:id="@+id/courseListView"
                 style="@style/AppInnerListViewStyle" />
 
-            <TextView
-                style="@style/AppTextViewStyle"
-                android:text="Course Mentors" />
-
         </LinearLayout>
 
     </ScrollView>

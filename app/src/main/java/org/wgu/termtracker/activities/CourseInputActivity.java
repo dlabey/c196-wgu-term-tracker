@@ -51,6 +51,7 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
     Toolbar actionBar;
 
     @BindView(R.id.titleEditText)
+    @NotEmpty
     EditText title;
 
     @BindView(R.id.startDateEditText)
@@ -251,7 +252,7 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
     }
 
     protected void saveAlert(final boolean result) {
-        AlertDialog alertDialog = new AlertDialog.Builder(CourseInputActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Notice");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
