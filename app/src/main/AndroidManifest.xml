@@ -26,6 +26,7 @@
         <activity android:name=".activities.TermInputActivity" />
         <activity android:name=".activities.PreferencesActivity" />
         <activity android:name=".activities.CourseMentorInputActivity" />
+        <activity android:name=".activities.CourseMentorViewActivity" />
     </application>
 
 </manifest>

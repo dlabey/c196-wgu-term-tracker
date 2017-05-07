@@ -1,17 +1,23 @@
 package org.wgu.termtracker.models;
 
-import android.icu.text.SimpleDateFormat;
-
-import org.wgu.termtracker.Constants;
-
 import java.io.Serializable;
 
 public class CourseMentorModel implements Serializable {
+    private long courseMentorId;
+
     private String name;
 
     private String phoneNumber;
 
     private String email;
+
+    public long getCourseMentorId() {
+        return courseMentorId;
+    }
+
+    public void setCourseMentorId(long courseMentorId) {
+        this.courseMentorId = courseMentorId;
+    }
 
     public String getName() {
         return name;

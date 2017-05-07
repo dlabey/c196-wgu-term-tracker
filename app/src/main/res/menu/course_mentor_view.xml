@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/editCourseMentor"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit Course Mentor"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/deleteCourseMentor"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Delete Course Mentor"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/course"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Course"
+        app:showAsAction="never" />
+
+</menu>

@@ -80,6 +80,12 @@ public class CourseMentorInputActivity extends AppCompatActivity implements Vali
                 courseMentor = null;
                 break;
             case Constants.EDIT:
+                getSupportActionBar().setTitle("Edit Course Mentor");
+
+                term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
+                course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
+                courseMentor = (CourseMentorModel) getIntent()
+                        .getSerializableExtra(Constants.COURSE_MENTOR);
                 break;
         }
 
@@ -87,7 +93,9 @@ public class CourseMentorInputActivity extends AppCompatActivity implements Vali
         validator.setValidationListener(this);
 
         if (courseMentor != null) {
-            // TODO handle edit
+            name.setText(courseMentor.getName());
+            phoneNumber.setText(courseMentor.getPhoneNumber());
+            email.setText(courseMentor.getEmail());
         }
     }
 
@@ -106,6 +114,11 @@ public class CourseMentorInputActivity extends AppCompatActivity implements Vali
                 saveAlert(newCourseMentorId > 0);
                 break;
             case Constants.EDIT:
+                boolean courseMentorUpdated = courseMentorManager.updateCourseMentor(
+                        courseMentor.getCourseMentorId(), name.getText().toString(),
+                        phoneNumber.getText().toString(), email.getText().toString());
+
+                saveAlert(courseMentorUpdated);
                 break;
         }
     }

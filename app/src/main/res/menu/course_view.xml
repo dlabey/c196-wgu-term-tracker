@@ -15,9 +15,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/courseTerm"
+        android:id="@+id/term"
         android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Course Term"
+        android:title="Term"
         app:showAsAction="never" />
 
     <item

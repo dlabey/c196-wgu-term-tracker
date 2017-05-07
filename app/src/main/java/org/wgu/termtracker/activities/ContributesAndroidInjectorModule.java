@@ -30,4 +30,7 @@ public abstract class ContributesAndroidInjectorModule {
 
     @ContributesAndroidInjector
     public abstract CourseMentorInputActivity contributeCourseMentorInputActivity();
+
+    @ContributesAndroidInjector
+    public abstract CourseMentorViewActivity contributeCourseMentorViewActivity();
 }

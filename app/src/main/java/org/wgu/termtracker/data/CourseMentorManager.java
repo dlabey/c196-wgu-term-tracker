@@ -78,6 +78,7 @@ public class CourseMentorManager extends DBManager implements CourseMentorContra
         List<CourseMentorModel> courseMentors = new LinkedList<>();
 
         while(cursor.moveToNext()) {
+            long courseMentorId = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
             String name = cursor.getString(cursor.getColumnIndex(
                     CourseMentorEntry.COLUMN_NAME_NAME));
             String phoneNumber = cursor.getString(cursor.getColumnIndex(
@@ -86,6 +87,7 @@ public class CourseMentorManager extends DBManager implements CourseMentorContra
                     CourseMentorEntry.COLUMN_NAME_EMAIL));
 
             CourseMentorModel courseMentor = new CourseMentorModel();
+            courseMentor.setCourseMentorId(courseMentorId);
             courseMentor.setName(name);
             courseMentor.setPhoneNumber(phoneNumber);
             courseMentor.setEmail(email);

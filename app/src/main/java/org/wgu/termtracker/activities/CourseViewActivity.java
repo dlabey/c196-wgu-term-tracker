@@ -124,7 +124,7 @@ public class CourseViewActivity extends AppCompatActivity {
             case R.id.deleteCourse:
                 this.onDeleteClick(item.getActionView());
                 break;
-            case R.id.courseTerm:
+            case R.id.term:
                 intent = new Intent(this, TermViewActivity.class);
 
                 intent.putExtra(Constants.TERM, term);
@@ -193,6 +193,16 @@ public class CourseViewActivity extends AppCompatActivity {
     }
 
     protected void onCourseMentorClick(int position, long id) {
-        Log.d(TAG, String.format("%s %s-%s", term.getTermId(), term.getStartDate(), term.getEndDate()));
+        CourseMentorModel courseMentor = courseMentorListAdapter.getItem(position);
+
+        Intent intent = new Intent(this, CourseMentorViewActivity.class);
+
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        intent.putExtra(Constants.COURSE_MENTOR, courseMentor);
+
+        startActivity(intent);
+
+        Log.d(TAG, String.format("%s", courseMentor.toString()));
     }
 }
