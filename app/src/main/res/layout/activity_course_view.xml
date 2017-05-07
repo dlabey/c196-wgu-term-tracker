@@ -98,6 +98,14 @@
                 android:id="@+id/courseMentorListView"
                 style="@style/AppInnerListViewStyle" />
 
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Assessments" />
+
+            <org.wgu.termtracker.layout.NonScrollListView
+                android:id="@+id/assessmentListView"
+                style="@style/AppInnerListViewStyle" />
+
         </LinearLayout>
 
     </ScrollView>

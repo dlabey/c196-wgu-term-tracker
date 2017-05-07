@@ -124,7 +124,7 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
-        datePickerDialog = new DatePickerDialog(CourseInputActivity.this,
+        datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {

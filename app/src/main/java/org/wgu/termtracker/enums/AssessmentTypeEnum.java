@@ -1,9 +1,12 @@
 package org.wgu.termtracker.enums;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public enum AssessmentTypeEnum {
+    SELECT(0),
     Performance(1),
     Objective(2);
 
@@ -23,6 +26,11 @@ public enum AssessmentTypeEnum {
 
     public int getValue() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.capitalize(this.name().replaceAll("_", " ").toLowerCase());
     }
 
     public static AssessmentTypeEnum valueOf(int type) {

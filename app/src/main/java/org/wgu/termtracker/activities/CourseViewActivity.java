@@ -16,9 +16,11 @@ import android.widget.TextView;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
+import org.wgu.termtracker.data.AssessmentManager;
 import org.wgu.termtracker.data.CourseManager;
 import org.wgu.termtracker.data.CourseMentorManager;
 import org.wgu.termtracker.layout.NonScrollListView;
+import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.TermModel;
@@ -39,6 +41,9 @@ public class CourseViewActivity extends AppCompatActivity {
 
     @Inject
     CourseMentorManager courseMentorManager;
+
+    @Inject
+    AssessmentManager assessmentManager;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -61,11 +66,16 @@ public class CourseViewActivity extends AppCompatActivity {
     @BindView(R.id.courseMentorListView)
     NonScrollListView courseMentorList;
 
+    @BindView(R.id.assessmentListView)
+    NonScrollListView assessmentList;
+
     protected TermModel term;
 
     protected CourseModel course;
 
     protected ArrayAdapter<CourseMentorModel> courseMentorListAdapter;
+
+    protected ArrayAdapter<AssessmentModel> assessmentListAddapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +112,18 @@ public class CourseViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseViewActivity.this.onCourseMentorClick(position, id);
+            }
+        });
+
+        List<AssessmentModel> assessments = assessmentManager.listAssessments(course.getCourseId());
+
+        assessmentListAddapter = new ArrayAdapter<AssessmentModel>(this,
+                android.R.layout.simple_list_item_1, assessments);
+        assessmentList.setAdapter(assessmentListAddapter);
+        assessmentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CourseViewActivity.this.onAssessmentClick(position, id);
             }
         });
     }
@@ -141,6 +163,13 @@ public class CourseViewActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.addAssessment:
+                intent = new Intent(this, AssessmentInputActivity.class);
+
+                intent.putExtra(Constants.TYPE, Constants.ADD);
+                intent.putExtra(Constants.TERM, term);
+                intent.putExtra(Constants.COURSE, course);
+
+                startActivity(intent);
                 break;
         }
 
@@ -204,5 +233,11 @@ public class CourseViewActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.d(TAG, String.format("%s", courseMentor.toString()));
+    }
+
+    protected void onAssessmentClick(int position, long id) {
+        AssessmentModel assessment = assessmentListAddapter.getItem(position);
+
+        Log.d(TAG, String.format("%s", assessment.toString()));
     }
 }

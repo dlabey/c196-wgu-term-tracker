@@ -1,11 +1,15 @@
 package org.wgu.termtracker.models;
 
+import android.icu.text.SimpleDateFormat;
+
+import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.enums.AssessmentTypeEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class AssessmentModel {
+public class AssessmentModel implements Serializable {
     private long assessmentId;
 
     private String title;
@@ -54,5 +58,14 @@ public class AssessmentModel {
 
     public void setNotes(List<NoteModel> notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+
+        String dueDate = simpleDateFormat.format(this.dueDate);
+
+        return String.format("%s%n%s%nDue %s", title, type.toString() + " Assessment", dueDate);
     }
 }

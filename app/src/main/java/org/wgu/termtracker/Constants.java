@@ -3,6 +3,8 @@ package org.wgu.termtracker;
 public interface Constants {
     public static String ADD = "add";
 
+    public static String ASSESSMENT = "assessment";
+
     public static String COURSE = "course";
 
     public static String COURSE_MENTOR = "course_mentor";
