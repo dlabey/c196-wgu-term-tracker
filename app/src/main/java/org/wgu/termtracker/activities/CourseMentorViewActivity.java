@@ -47,8 +47,6 @@ public class CourseMentorViewActivity extends AppCompatActivity {
 
     protected CourseModel course;
 
-    protected CourseModel courseModel;
-
     protected CourseMentorModel courseMentor;
 
     @Override
@@ -145,6 +143,6 @@ public class CourseMentorViewActivity extends AppCompatActivity {
 
         startActivity(intent);
 
-        Log.d(TAG, String.format("onEditClick", term.getTermId()));
+        Log.d(TAG, String.format("onEditClick", courseMentor.getCourseMentorId()));
     }
 }

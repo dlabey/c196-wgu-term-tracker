@@ -62,7 +62,7 @@ public class AssessmentManager extends DBManager implements AsessmentContract {
         String selection = String.format("%s = ?", BaseColumns._ID);
         String[] selectionArgs = { String.valueOf(assessmentId) };
 
-        return db.update(CourseEntry.TABLE_NAME, values, selection, selectionArgs) > 0;
+        return db.update(AssessmentEntry.TABLE_NAME, values, selection, selectionArgs) > 0;
     }
 
     public boolean deleteAssessment(long assessmentId) {

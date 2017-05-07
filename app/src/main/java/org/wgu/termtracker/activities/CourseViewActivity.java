@@ -238,6 +238,14 @@ public class CourseViewActivity extends AppCompatActivity {
     protected void onAssessmentClick(int position, long id) {
         AssessmentModel assessment = assessmentListAddapter.getItem(position);
 
+        Intent intent = new Intent(this, AssessmentViewActivity.class);
+
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        intent.putExtra(Constants.ASSESSMENT, assessment);
+
+        startActivity(intent);
+
         Log.d(TAG, String.format("%s", assessment.toString()));
     }
 }
