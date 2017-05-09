@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import org.wgu.termtracker.data.AssessmentManager;
 import org.wgu.termtracker.data.CourseManager;
 import org.wgu.termtracker.data.CourseMentorManager;
+import org.wgu.termtracker.data.NoteManager;
 import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.data.TermManager;
 
@@ -53,5 +54,11 @@ public class AppModule {
     @Provides
     AssessmentManager provideAssessmentManager() {
         return new AssessmentManager(app.getBaseContext());
+    }
+
+    @Singleton
+    @Provides
+    NoteManager provideNoteManager() {
+        return new NoteManager(app.getBaseContext());
     }
 }

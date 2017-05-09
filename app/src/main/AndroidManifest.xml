@@ -27,6 +27,8 @@
         <activity android:name=".activities.PreferencesActivity" />
         <activity android:name=".activities.CourseMentorInputActivity" />
         <activity android:name=".activities.CourseMentorViewActivity" />
+        <activity android:name=".activities.NoteViewActivity" />
+        <activity android:name=".activities.NoteInputActivity"></activity>
     </application>
 
 </manifest>

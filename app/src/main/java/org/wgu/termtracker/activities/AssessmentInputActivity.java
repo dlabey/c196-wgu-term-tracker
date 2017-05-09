@@ -73,8 +73,6 @@ public class AssessmentInputActivity extends AppCompatActivity
 
     protected EditText dateDialogEditText;
 
-    protected Map<Integer, String> assessmentTypes;
-
     protected Validator validator;
 
     protected TermModel term;

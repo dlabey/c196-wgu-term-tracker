@@ -171,6 +171,16 @@ public class CourseViewActivity extends AppCompatActivity {
 
                 startActivity(intent);
                 break;
+            case R.id.addNote:
+                intent = new Intent(this, NoteInputActivity.class);
+
+                intent.putExtra(Constants.ACTION_TYPE, Constants.ADD);
+                intent.putExtra(Constants.NOTE_FOR_TYPE, Constants.COURSE);
+                intent.putExtra(Constants.TERM, term);
+                intent.putExtra(Constants.COURSE, course);
+
+                startActivity(intent);
+                break;
         }
 
         return false;

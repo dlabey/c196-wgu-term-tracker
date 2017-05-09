@@ -39,4 +39,7 @@ public abstract class ContributesAndroidInjectorModule {
 
     @ContributesAndroidInjector
     public abstract AssessmentViewActivity contributeAssessmentViewActivity();
+
+    @ContributesAndroidInjector
+    public abstract NoteInputActivity contributeNoteInputActivity();
 }

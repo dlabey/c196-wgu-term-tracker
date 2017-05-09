@@ -3,11 +3,21 @@ package org.wgu.termtracker.models;
 import org.wgu.termtracker.enums.NoteTypeEnum;
 
 public class NoteModel {
+    private long noteId;
+
     private NoteTypeEnum type;
 
     private String text;
 
-    private String filename;
+    private String photoUri;
+
+    public long getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(long noteId) {
+        this.noteId = noteId;
+    }
 
     public NoteTypeEnum getType() {
         return type;
@@ -25,11 +35,11 @@ public class NoteModel {
         this.text = text;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getPhotoUri() {
+        return photoUri;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 }
