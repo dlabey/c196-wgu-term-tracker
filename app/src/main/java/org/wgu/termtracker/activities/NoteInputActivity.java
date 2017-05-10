@@ -1,12 +1,20 @@
 package org.wgu.termtracker.activities;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +42,8 @@ import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.NoteModel;
 import org.wgu.termtracker.models.TermModel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,6 +53,10 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
 public class NoteInputActivity extends AppCompatActivity implements Validator.ValidationListener {
+    private static final String TAG = "NoteInputActivity";
+
+    private static final int SELECT_PHOTO = 9010;
+
     @BindView(R.id.actionBar)
     Toolbar actionBar;
 
@@ -56,7 +70,11 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     @BindView(R.id.textEditText)
     EditText text;
 
-    protected String photoUri;
+    @BindView(R.id.photoTextView)
+    TextView photoText;
+
+
+    protected Uri photoUri;
 
     protected String actionType;
 
@@ -133,6 +151,81 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, String.valueOf(requestCode));
+        Log.d(TAG, String.valueOf(resultCode));
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PHOTO) {
+                final boolean isCamera;
+
+                if (data == null) {
+                    isCamera = true;
+                } else {
+                    final String action = data.getAction();
+
+                    isCamera = MediaStore.ACTION_IMAGE_CAPTURE.equals(data.getAction());
+                }
+
+                Uri selectedImageUri;
+
+                if (isCamera) {
+                    selectedImageUri = photoUri;
+                } else {
+                    selectedImageUri = data == null ? null : data.getData();
+                }
+
+                photoText.setText(selectedImageUri.toString());
+
+                Log.d(TAG, selectedImageUri.toString());
+            }
+        }
+    }
+
+    public void onPhotoButtonClick(View view) {
+        File root = new File(Environment.getExternalStorageDirectory() + File.separator + "photos" + File.separator);
+
+        root.mkdirs();
+
+        String fileName = String.format("photo_%s.jpg", System.currentTimeMillis());
+
+        File sdImageMainDirectory = new File(root, fileName);
+
+        photoUri = Uri.fromFile(sdImageMainDirectory);
+
+        List<Intent> cameraIntents = new ArrayList<Intent>();
+
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+        PackageManager packageManager = getPackageManager();
+
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+
+        for(ResolveInfo resolvedInfo : listCam) {
+            String packageName = resolvedInfo.activityInfo.packageName;
+
+            Intent intent = new Intent(captureIntent);
+
+            intent.setComponent(new ComponentName(packageName, resolvedInfo.activityInfo.name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+
+            cameraIntents.add(intent);
+        }
+
+        Intent galleryIntent = new Intent();
+
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_PICK);
+
+        Intent chooserIntent = Intent.createChooser(galleryIntent, "Select source");
+
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+
+        startActivityForResult(chooserIntent, SELECT_PHOTO);
+    }
+
     public void onSaveButtonClick(View view) {
         validator.validate();
     }
@@ -147,14 +240,14 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                     case Constants.COURSE:
                         newNoteId = noteManager.createCourseNote(course.getCourseId(),
                             (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUri);
+                            photoUri.toString());
 
                         saveAlert(newNoteId > 0);
                     break;
                     case Constants.ASSESSMENT:
                         newNoteId = noteManager.createCourseNote(course.getCourseId(),
                             (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUri);
+                            photoUri.toString());
 
                         saveAlert(newNoteId > 0);
                     break;
@@ -163,7 +256,7 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
             case Constants.EDIT:
                 boolean noteUpdated = noteManager.updateNote(note.getNoteId(),
                     (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                    photoUri);
+                    photoUri.toString());
 
                 saveAlert(noteUpdated);
                 break;
