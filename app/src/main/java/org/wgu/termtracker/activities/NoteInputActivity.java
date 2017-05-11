@@ -153,6 +153,7 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult");
         Log.d(TAG, String.valueOf(requestCode));
         Log.d(TAG, String.valueOf(resultCode));
 
@@ -160,12 +161,16 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
             if (requestCode == SELECT_PHOTO) {
                 final boolean isCamera;
 
-                if (data == null) {
+                if (data == null || data.getData() == null) {
                     isCamera = true;
                 } else {
                     final String action = data.getAction();
 
-                    isCamera = MediaStore.ACTION_IMAGE_CAPTURE.equals(data.getAction());
+                    if (action == null) {
+                        isCamera = false;
+                    } else {
+                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    }
                 }
 
                 Uri selectedImageUri;
@@ -173,7 +178,7 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 if (isCamera) {
                     selectedImageUri = photoUri;
                 } else {
-                    selectedImageUri = data == null ? null : data.getData();
+                    selectedImageUri = data.getData();
                 }
 
                 photoText.setText(selectedImageUri.toString());
@@ -184,15 +189,20 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     }
 
     public void onPhotoButtonClick(View view) {
-        File root = new File(Environment.getExternalStorageDirectory() + File.separator + "photos" + File.separator);
+        File root = new File(Environment. + File.separator + "wgu" + File.separator);
 
-        root.mkdirs();
+        boolean mkdirs = root.mkdirs();
 
-        String fileName = String.format("photo_%s.jpg", System.currentTimeMillis());
+        Log.d(TAG, "mkdirs");
+        Log.d(TAG, String.valueOf(mkdirs));
+
+        String fileName = String.format("photo-%s.jpg", System.currentTimeMillis());
 
         File sdImageMainDirectory = new File(root, fileName);
 
         photoUri = Uri.fromFile(sdImageMainDirectory);
+
+        Log.d(TAG, photoUri.toString());
 
         List<Intent> cameraIntents = new ArrayList<Intent>();
 
@@ -210,7 +220,6 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
             intent.setComponent(new ComponentName(packageName, resolvedInfo.activityInfo.name));
             intent.setPackage(packageName);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-
             cameraIntents.add(intent);
         }
 
@@ -224,6 +233,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
 
         startActivityForResult(chooserIntent, SELECT_PHOTO);
+
+        Log.d(TAG, String.valueOf(SELECT_PHOTO));
     }
 
     public void onSaveButtonClick(View view) {
