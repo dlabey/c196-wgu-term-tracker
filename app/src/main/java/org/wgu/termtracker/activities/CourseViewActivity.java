@@ -145,7 +145,7 @@ public class CourseViewActivity extends AppCompatActivity {
         courseNoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
+                CourseViewActivity.this.onCourseNoteClick(position, id);
             }
         });
     }
@@ -212,7 +212,7 @@ public class CourseViewActivity extends AppCompatActivity {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
-        alertDialog.setMessage("Are you sure you want to delete this term?");
+        alertDialog.setMessage("Are you sure you want to delete this course?");
         alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -279,5 +279,20 @@ public class CourseViewActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.d(TAG, String.format("%s", assessment.toString()));
+    }
+
+    protected void onCourseNoteClick(int position, long id) {
+        NoteModel note = courseNoteListAdapter.getItem(position);
+
+        Intent intent = new Intent(this, NoteViewActivity.class);
+
+        intent.putExtra(Constants.NOTE_FOR_TYPE, Constants.COURSE);
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        intent.putExtra(Constants.NOTE, note);
+
+        startActivity(intent);
+
+        Log.d(TAG, String.format("%s", note.toString()));
     }
 }

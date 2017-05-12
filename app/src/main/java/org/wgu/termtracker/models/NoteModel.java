@@ -1,11 +1,9 @@
 package org.wgu.termtracker.models;
 
-import org.wgu.termtracker.enums.NoteTypeEnum;
+import java.io.Serializable;
 
-public class NoteModel {
+public class NoteModel implements Serializable {
     private long noteId;
-
-    private NoteTypeEnum type;
 
     private String text;
 
@@ -17,14 +15,6 @@ public class NoteModel {
 
     public void setNoteId(long noteId) {
         this.noteId = noteId;
-    }
-
-    public NoteTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(NoteTypeEnum type) {
-        this.type = type;
     }
 
     public String getText() {

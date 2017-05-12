@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import org.apache.commons.lang.StringUtils;
-import org.wgu.termtracker.enums.CourseStatusEnum;
-import org.wgu.termtracker.enums.NoteTypeEnum;
-import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.NoteModel;
 
 import java.util.LinkedList;
@@ -27,7 +23,7 @@ public class NoteManager extends DBManager implements NoteContract {
         super(context);
     }
 
-    public long createCourseNote(long courseId, NoteTypeEnum type, String text, String photoUri) {
+    public long createCourseNote(long courseId, String text, String photoUri) {
         long courseNoteId = -1;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -37,7 +33,6 @@ public class NoteManager extends DBManager implements NoteContract {
 
             ContentValues values = new ContentValues();
 
-            values.put(NoteEntry.COLUMN_NAME_TYPE, type.getValue());
             values.put(NoteEntry.COLUMN_NAME_TEXT, text);
             values.put(NoteEntry.COLUMN_NAME_PHOTO_URI, photoUri);
 
@@ -60,8 +55,7 @@ public class NoteManager extends DBManager implements NoteContract {
         return courseNoteId;
     }
 
-    public long createAssessmentNote(long assessmentId, NoteTypeEnum type, String text,
-                                     String photoUri) {
+    public long createAssessmentNote(long assessmentId, String text, String photoUri) {
         long assessmentNodeId = -1;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -71,7 +65,6 @@ public class NoteManager extends DBManager implements NoteContract {
 
             ContentValues values = new ContentValues();
 
-            values.put(NoteEntry.COLUMN_NAME_TYPE, type.getValue());
             values.put(NoteEntry.COLUMN_NAME_TEXT, text);
             values.put(NoteEntry.COLUMN_NAME_PHOTO_URI, photoUri);
 
@@ -94,12 +87,11 @@ public class NoteManager extends DBManager implements NoteContract {
         return assessmentNodeId;
     }
 
-    public boolean updateNote(long noteId, NoteTypeEnum type, String text, String photoUri) {
+    public boolean updateNote(long noteId, String text, String photoUri) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(NoteEntry.COLUMN_NAME_TYPE, type.getValue());
         values.put(NoteEntry.COLUMN_NAME_TEXT, text);
         values.put(NoteEntry.COLUMN_NAME_PHOTO_URI, photoUri);
 
@@ -176,8 +168,8 @@ public class NoteManager extends DBManager implements NoteContract {
 
         String noteIdCol = String.format("%s.%s", NoteEntry.TABLE_NAME, BaseColumns._ID);
 
-        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TYPE,
-                NoteEntry.COLUMN_NAME_TEXT, NoteEntry.COLUMN_NAME_PHOTO_URI };
+        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TEXT,
+                NoteEntry.COLUMN_NAME_PHOTO_URI };
 
         String selection = String.format("%s = ? AND %s.%s = %s.%s",
                 CourseNoteEntry.COLUMN_NAME_COURSE_ID,
@@ -195,17 +187,13 @@ public class NoteManager extends DBManager implements NoteContract {
         List<NoteModel> courseNotes = new LinkedList<>();
 
         while(cursor.moveToNext()) {
-            long noteId = cursor.getLong(0);
-            NoteTypeEnum type = NoteTypeEnum.valueOf(cursor.getInt(
-                    cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TYPE)
-            ));
+            long noteId = cursor.getLong(cursor.getColumnIndex(cursor.getColumnName(0)));
             String text = cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TEXT));
             String photoUri = cursor.getString(cursor.getColumnIndex(
                     NoteEntry.COLUMN_NAME_PHOTO_URI));
 
             NoteModel courseNote = new NoteModel();
             courseNote.setNoteId(noteId);
-            courseNote.setType(type);
             courseNote.setText(text);
             courseNote.setPhotoUri(photoUri);
 
@@ -224,8 +212,8 @@ public class NoteManager extends DBManager implements NoteContract {
 
         String noteIdCol = String.format("%s.%s", NoteEntry.TABLE_NAME, BaseColumns._ID);
 
-        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TYPE,
-                NoteEntry.COLUMN_NAME_TEXT, NoteEntry.COLUMN_NAME_PHOTO_URI };
+        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TEXT,
+                NoteEntry.COLUMN_NAME_PHOTO_URI };
 
         String selection = String.format("%s = ? AND %s.%s = %s.%s",
                 AssessmentNoteEntry.COLUMN_NAME_ASSESSMENT_ID,
@@ -243,17 +231,13 @@ public class NoteManager extends DBManager implements NoteContract {
         List<NoteModel> assessmentNotes = new LinkedList<>();
 
         while(cursor.moveToNext()) {
-            long noteId = cursor.getLong(0);
-            NoteTypeEnum type = NoteTypeEnum.valueOf(cursor.getInt(
-                    cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TYPE)
-            ));
+            long noteId = cursor.getLong(cursor.getColumnIndex(cursor.getColumnName(0)));
             String text = cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TEXT));
             String photoUri = cursor.getString(cursor.getColumnIndex(
                     NoteEntry.COLUMN_NAME_PHOTO_URI));
 
             NoteModel assessmentNote = new NoteModel();
             assessmentNote.setNoteId(noteId);
-            assessmentNote.setType(type);
             assessmentNote.setText(text);
             assessmentNote.setPhotoUri(photoUri);
 

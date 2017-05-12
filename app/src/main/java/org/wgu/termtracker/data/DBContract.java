@@ -109,7 +109,6 @@ interface DBContract {
 
     static class NoteEntry implements BaseColumns {
         static final String TABLE_NAME = "notes";
-        static final String COLUMN_NAME_TYPE = "type";
         static final String COLUMN_NAME_TEXT = "text";
         static final String COLUMN_NAME_PHOTO_URI = "photo_uri";
 
@@ -117,7 +116,6 @@ interface DBContract {
             HashMap<String, String> columns = new LinkedHashMap<>();
 
             columns.put(BaseColumns._ID, "INTEGER PRIMARY KEY");
-            columns.put(COLUMN_NAME_TYPE, "INTEGER");
             columns.put(COLUMN_NAME_TEXT, "TEXT");
             columns.put(COLUMN_NAME_PHOTO_URI, "TEXT");
 

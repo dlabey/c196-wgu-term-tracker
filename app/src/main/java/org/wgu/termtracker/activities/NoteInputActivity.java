@@ -11,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,29 +19,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.mobsandgeeks.saripaar.AnnotationRule;
-import com.mobsandgeeks.saripaar.QuickRule;
-import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Select;
-import com.mobsandgeeks.saripaar.rule.NotEmptyRule;
 
-import org.apache.commons.lang.StringUtils;
 import org.wgu.termtracker.App;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.NoteManager;
-import org.wgu.termtracker.enums.AssessmentTypeEnum;
-import org.wgu.termtracker.enums.NoteTypeEnum;
 import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.NoteModel;
@@ -74,11 +63,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     @Inject
     NoteManager noteManager;
 
-    @BindView(R.id.typeSpinner)
-    @Select
-    Spinner noteType;
-
     @BindView(R.id.textEditText)
+    @NotEmpty
     EditText text;
 
     @BindView(R.id.photoImageView)
@@ -116,80 +102,26 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         actionType = getIntent().getStringExtra(Constants.ACTION_TYPE);
         noteForType = getIntent().getStringExtra(Constants.NOTE_FOR_TYPE);
 
-        ArrayAdapter<NoteTypeEnum> noteTypeAdapter = new ArrayAdapter<NoteTypeEnum>(this,
-                android.R.layout.simple_spinner_item, NoteTypeEnum.values());
-
-        this.noteType.setAdapter(noteTypeAdapter);
-
         photoText.setKeyListener(null);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-        //noinspection unchecked
-        validator.put(text, new QuickRule<EditText>() {
-            NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-
-            @Override
-            public boolean isValid(EditText view) {
-                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-                boolean valid = true;
-
-                switch (selectedNoteType) {
-                    case Text:
-                        valid = !StringUtils.isEmpty(view.getText().toString());
-                    break;
-                }
-
-                return valid;
-            }
-
-            @Override
-            public String getMessage(Context context) {
-                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-
-                String message = "Text is required";
-
-                return message;
-            }
-        });
-        //noinspection unchecked
-        validator.put(photoText, new QuickRule<TextView>() {
-            NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-
-            @Override
-            public boolean isValid(TextView view) {
-                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-                boolean valid = true;
-
-                switch (selectedNoteType) {
-                    case Photo:
-                        valid = !StringUtils.isEmpty(view.getText().toString());
-                        break;
-                }
-
-                Log.d(TAG, String.valueOf(valid));
-
-                return valid;
-            }
-
-            @Override
-            public String getMessage(Context context) {
-                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-
-                String message = "Photo is required";
-
-                return message;
-            }
-        });
 
         term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
         course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
         assessment = (AssessmentModel) getIntent().getSerializableExtra(Constants.ASSESSMENT);
+        note = (NoteModel) getIntent().getSerializableExtra(Constants.NOTE);
 
         checkWritingReadingPermission();
 
         if (note != null) {
+            String photoUriStr = note.getPhotoUri();
 
+            text.setText(note.getText());
+
+            if (photoUriStr != null) {
+                photoText.setText(photoUriStr);
+            }
         }
     }
 
@@ -223,18 +155,14 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
 
                     if (action == null) {
                         isCamera = false;
+
+                        photoUri = data.getData();
                     } else {
                         isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     }
                 }
 
-                Uri selectedImageUri;
-
-                if (isCamera) {
-                    selectedImageUri = photoUri;
-                } else {
-                    selectedImageUri = data.getData();
-                }
+                Uri selectedImageUri = photoUri;
 
                 photoText.setText(selectedImageUri.toString());
 
@@ -306,15 +234,13 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 switch (noteForType) {
                     case Constants.COURSE:
                         newNoteId = noteManager.createCourseNote(course.getCourseId(),
-                            (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUriStr);
+                            text.getText().toString(), photoUriStr);
 
                         saveAlert(newNoteId > 0);
                     break;
                     case Constants.ASSESSMENT:
                         newNoteId = noteManager.createAssessmentNote(assessment.getAssessmentId(),
-                            (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUriStr);
+                            text.getText().toString(), photoUriStr);
 
                         saveAlert(newNoteId > 0);
                     break;
@@ -322,8 +248,7 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 break;
             case Constants.EDIT:
                 boolean noteUpdated = noteManager.updateNote(note.getNoteId(),
-                    (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                    photoUri.toString());
+                    text.getText().toString(), photoUriStr);
 
                 saveAlert(noteUpdated);
                 break;

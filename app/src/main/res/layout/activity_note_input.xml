@@ -44,14 +44,6 @@
 
             <TextView
                 style="@style/AppTextViewStyle"
-                android:text="Status" />
-
-            <Spinner
-                android:id="@+id/typeSpinner"
-                style="@style/AppSpinnerStyle" />
-
-            <TextView
-                style="@style/AppTextViewStyle"
                 android:text="Text" />
 
             <EditText

@@ -42,4 +42,7 @@ public abstract class ContributesAndroidInjectorModule {
 
     @ContributesAndroidInjector
     public abstract NoteInputActivity contributeNoteInputActivity();
+
+    @ContributesAndroidInjector
+    public abstract NoteViewActivity contributeNoteViewActivity();
 }

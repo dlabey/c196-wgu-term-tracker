@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/editNote"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit Note"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/deleteNote"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Delete Note"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/object"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Object"
+        app:showAsAction="never" />
+
+</menu>

@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -103,7 +101,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
         assessmentNoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
+                AssessmentViewActivity.this.onAssessmentNoteClick(position, id);
             }
         });
     }
@@ -195,5 +193,21 @@ public class AssessmentViewActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.d(TAG, String.format("onEditClick", assessment.getAssessmentId()));
+    }
+
+    protected void onAssessmentNoteClick(int position, long id) {
+        NoteModel note = assessmentNoteListAdapter.getItem(position);
+
+        Intent intent = new Intent(this, NoteViewActivity.class);
+
+        intent.putExtra(Constants.NOTE_FOR_TYPE, Constants.ASSESSMENT);
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        intent.putExtra(Constants.ASSESSMENT, assessment);
+        intent.putExtra(Constants.NOTE, note);
+
+        startActivity(intent);
+
+        Log.d(TAG, String.format("%s", note.toString()));
     }
 }
