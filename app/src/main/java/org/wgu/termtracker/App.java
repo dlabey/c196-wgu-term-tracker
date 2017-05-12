@@ -3,10 +3,7 @@ package org.wgu.termtracker;
 import android.app.Activity;
 import android.app.Application;
 
-import org.wgu.termtracker.activities.HomeActivity;
-
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;

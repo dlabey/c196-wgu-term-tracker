@@ -261,10 +261,9 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
 
                         if (result) {
                             Intent intent = new Intent(CourseInputActivity.this,
-                                    CourseViewActivity.class);
+                                    TermViewActivity.class);
 
                             intent.putExtra(Constants.TERM, term);
-                            intent.putExtra(Constants.COURSE, course);
 
                             startActivity(intent);
                         }

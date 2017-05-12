@@ -1,5 +1,6 @@
 package org.wgu.termtracker.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +11,10 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,6 +37,7 @@ import com.mobsandgeeks.saripaar.annotation.Select;
 import com.mobsandgeeks.saripaar.rule.NotEmptyRule;
 
 import org.apache.commons.lang.StringUtils;
+import org.wgu.termtracker.App;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.NoteManager;
@@ -55,7 +61,12 @@ import dagger.android.AndroidInjection;
 public class NoteInputActivity extends AppCompatActivity implements Validator.ValidationListener {
     private static final String TAG = "NoteInputActivity";
 
+    private static final int REQUEST_CODE_PERMISSION = 766;
+
     private static final int SELECT_PHOTO = 9010;
+
+    @Inject
+    App app;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -70,9 +81,11 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     @BindView(R.id.textEditText)
     EditText text;
 
+    @BindView(R.id.photoImageView)
+    ImageView photoChooser;
+
     @BindView(R.id.photoTextView)
     TextView photoText;
-
 
     protected Uri photoUri;
 
@@ -146,8 +159,21 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
             }
         });
 
+        checkWritingReadingPermission();
+
         if (note != null) {
 
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults.length >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                photoChooser.setEnabled(true);
+            } else {
+                photoChooser.setEnabled(false);
+            }
         }
     }
 
@@ -189,14 +215,19 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     }
 
     public void onPhotoButtonClick(View view) {
-        File root = new File(Environment. + File.separator + "wgu" + File.separator);
+        File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "WGU");
 
         boolean mkdirs = root.mkdirs();
 
-        Log.d(TAG, "mkdirs");
+        String state = Environment.getExternalStorageState();
+
+        Log.d(TAG, String.valueOf(canWriteToExternalStorage(this.app)));
+        Log.d(TAG, String.valueOf(canReadFromExternalStorage(this.app)));
+        Log.d(TAG, String.valueOf(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())));
+        Log.d(TAG, state);
         Log.d(TAG, String.valueOf(mkdirs));
 
-        String fileName = String.format("photo-%s.jpg", System.currentTimeMillis());
+        String fileName = String.format("%s.jpg", System.currentTimeMillis());
 
         File sdImageMainDirectory = new File(root, fileName);
 
@@ -333,5 +364,29 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         }
 
         alertDialog.show();
+    }
+
+    private void checkWritingReadingPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Log.d(TAG, "Permission wasn't granted");
+                // permission wasn't granted
+            } else {
+                Log.d(TAG, "Permission was requested");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+            }
+
+            Log.d(TAG, "Checked");
+        }
+    }
+
+    private static boolean canWriteToExternalStorage(Context context) {
+        return ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private static boolean canReadFromExternalStorage(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 }
