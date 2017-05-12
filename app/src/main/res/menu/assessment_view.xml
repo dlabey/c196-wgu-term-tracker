@@ -20,4 +20,10 @@
         android:title="Course"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/addNote"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add Note"
+        app:showAsAction="never" />
+
 </menu>

@@ -84,8 +84,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
     @BindView(R.id.photoImageView)
     ImageView photoChooser;
 
-    @BindView(R.id.photoTextView)
-    TextView photoText;
+    @BindView(R.id.photoEditText)
+    EditText photoText;
 
     protected Uri photoUri;
 
@@ -114,16 +114,18 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         setSupportActionBar(actionBar);
 
         actionType = getIntent().getStringExtra(Constants.ACTION_TYPE);
+        noteForType = getIntent().getStringExtra(Constants.NOTE_FOR_TYPE);
 
         ArrayAdapter<NoteTypeEnum> noteTypeAdapter = new ArrayAdapter<NoteTypeEnum>(this,
                 android.R.layout.simple_spinner_item, NoteTypeEnum.values());
 
         this.noteType.setAdapter(noteTypeAdapter);
 
+        photoText.setKeyListener(null);
+
         validator = new Validator(this);
         validator.setValidationListener(this);
         //noinspection unchecked
-        // TODO: write validator for photo property
         validator.put(text, new QuickRule<EditText>() {
             NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
 
@@ -144,20 +146,45 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
             @Override
             public String getMessage(Context context) {
                 NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
-                String message = StringUtils.EMPTY;
 
-                switch (selectedNoteType) {
-                    case Text:
-                        message = "Text is required";
-                    break;
-                    case Photo:
-                        message = "Photo is required";
-                    break;
-                }
+                String message = "Text is required";
 
                 return message;
             }
         });
+        //noinspection unchecked
+        validator.put(photoText, new QuickRule<TextView>() {
+            NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
+
+            @Override
+            public boolean isValid(TextView view) {
+                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
+                boolean valid = true;
+
+                switch (selectedNoteType) {
+                    case Photo:
+                        valid = !StringUtils.isEmpty(view.getText().toString());
+                        break;
+                }
+
+                Log.d(TAG, String.valueOf(valid));
+
+                return valid;
+            }
+
+            @Override
+            public String getMessage(Context context) {
+                NoteTypeEnum selectedNoteType = (NoteTypeEnum) noteType.getSelectedItem();
+
+                String message = "Photo is required";
+
+                return message;
+            }
+        });
+
+        term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
+        course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
+        assessment = (AssessmentModel) getIntent().getSerializableExtra(Constants.ASSESSMENT);
 
         checkWritingReadingPermission();
 
@@ -173,6 +200,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 photoChooser.setEnabled(true);
             } else {
                 photoChooser.setEnabled(false);
+
+                improperPermissionsAlert();
             }
         }
     }
@@ -221,12 +250,6 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
 
         String state = Environment.getExternalStorageState();
 
-        Log.d(TAG, String.valueOf(canWriteToExternalStorage(this.app)));
-        Log.d(TAG, String.valueOf(canReadFromExternalStorage(this.app)));
-        Log.d(TAG, String.valueOf(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())));
-        Log.d(TAG, state);
-        Log.d(TAG, String.valueOf(mkdirs));
-
         String fileName = String.format("%s.jpg", System.currentTimeMillis());
 
         File sdImageMainDirectory = new File(root, fileName);
@@ -274,6 +297,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
 
     @Override
     public void onValidationSucceeded() {
+        String photoUriStr = photoUri == null ? null : photoUri.toString();
+
         long newNoteId = -1;
 
         switch (actionType) {
@@ -282,14 +307,14 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                     case Constants.COURSE:
                         newNoteId = noteManager.createCourseNote(course.getCourseId(),
                             (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUri.toString());
+                            photoUriStr);
 
                         saveAlert(newNoteId > 0);
                     break;
                     case Constants.ASSESSMENT:
-                        newNoteId = noteManager.createCourseNote(course.getCourseId(),
+                        newNoteId = noteManager.createAssessmentNote(assessment.getAssessmentId(),
                             (NoteTypeEnum) noteType.getSelectedItem(), text.getText().toString(),
-                            photoUri.toString());
+                            photoUriStr);
 
                         saveAlert(newNoteId > 0);
                     break;
@@ -320,18 +345,72 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
-    protected void saveAlert(final boolean result) {
+    protected void checkWritingReadingPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                improperPermissionsAlert();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+            }
+        }
+    }
+
+    protected void improperPermissionsAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Notice");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                         Intent intent;
 
+                        switch (noteForType) {
+                            case Constants.COURSE:
+                                intent = new Intent(NoteInputActivity.this,
+                                        CourseViewActivity.class);
+
+                                intent.putExtra(Constants.TERM, term);
+                                intent.putExtra(Constants.COURSE, course);
+
+                                startActivity(intent);
+                                break;
+                            case Constants.ASSESSMENT:
+                                intent = new Intent(NoteInputActivity.this,
+                                        AssessmentViewActivity.class);
+
+                                intent.putExtra(Constants.TERM, term);
+                                intent.putExtra(Constants.COURSE, course);
+                                intent.putExtra(Constants.ASSESSMENT, assessment);
+
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+                }
+        );
+
+        alertDialog.setMessage("To make notes you need to allow permission to write and read from external storage");
+        alertDialog.show();
+    }
+
+    protected void saveAlert(final boolean result) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Notice");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, Constants.OK,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        Intent intent;
+
+                        Log.d(TAG, String.valueOf(term));
+                        Log.d(TAG, String.valueOf(course));
+
                         if (result) {
-                            switch (actionType) {
+                            switch (noteForType) {
                                 case Constants.COURSE:
                                     intent = new Intent(NoteInputActivity.this,
                                             CourseViewActivity.class);
@@ -364,29 +443,5 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         }
 
         alertDialog.show();
-    }
-
-    private void checkWritingReadingPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Log.d(TAG, "Permission wasn't granted");
-                // permission wasn't granted
-            } else {
-                Log.d(TAG, "Permission was requested");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
-            }
-
-            Log.d(TAG, "Checked");
-        }
-    }
-
-    private static boolean canWriteToExternalStorage(Context context) {
-        return ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private static boolean canReadFromExternalStorage(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 }

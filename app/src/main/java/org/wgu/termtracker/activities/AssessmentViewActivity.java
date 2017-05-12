@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,9 +23,14 @@ import com.mobsandgeeks.saripaar.annotation.Select;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.AssessmentManager;
+import org.wgu.termtracker.data.NoteManager;
+import org.wgu.termtracker.layout.NonScrollListView;
 import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseModel;
+import org.wgu.termtracker.models.NoteModel;
 import org.wgu.termtracker.models.TermModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,6 +43,9 @@ public class AssessmentViewActivity extends AppCompatActivity {
 
     @Inject
     AssessmentManager assessmentManager;
+
+    @Inject
+    NoteManager noteManager;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -52,11 +62,16 @@ public class AssessmentViewActivity extends AppCompatActivity {
     @Select
     TextView assessmentType;
 
+    @BindView(R.id.assessmentNoteListView)
+    NonScrollListView assessmentNoteList;
+
     protected TermModel term;
 
     protected CourseModel course;
 
     protected AssessmentModel assessment;
+
+    protected ArrayAdapter<NoteModel> assessmentNoteListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +94,18 @@ public class AssessmentViewActivity extends AppCompatActivity {
         title.setText(assessment.getTitle());
         dueDate.setText(dueDateStr);
         assessmentType.setText(assessment.getType().toString());
+
+        List<NoteModel> assessmentNotes = noteManager.listAssessmentNotes(assessment.getAssessmentId());
+
+        assessmentNoteListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, assessmentNotes);
+        assessmentNoteList.setAdapter(assessmentNoteListAdapter);
+        assessmentNoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //
+            }
+        });
     }
 
     @Override
@@ -107,6 +134,17 @@ public class AssessmentViewActivity extends AppCompatActivity {
 
                 startActivity(intent);
                 break;
+            case R.id.addNote:
+                intent = new Intent(this, NoteInputActivity.class);
+
+                intent.putExtra(Constants.ACTION_TYPE, Constants.ADD);
+                intent.putExtra(Constants.NOTE_FOR_TYPE, Constants.ASSESSMENT);
+                intent.putExtra(Constants.TERM, term);
+                intent.putExtra(Constants.COURSE, course);
+                intent.putExtra(Constants.ASSESSMENT, assessment);
+
+                startActivity(intent);
+                break;
         }
 
         return false;
@@ -124,7 +162,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         assessmentManager.deleteAssessment(assessment.getAssessmentId());

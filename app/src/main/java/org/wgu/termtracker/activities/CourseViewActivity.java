@@ -19,10 +19,12 @@ import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.AssessmentManager;
 import org.wgu.termtracker.data.CourseManager;
 import org.wgu.termtracker.data.CourseMentorManager;
+import org.wgu.termtracker.data.NoteManager;
 import org.wgu.termtracker.layout.NonScrollListView;
 import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.CourseModel;
+import org.wgu.termtracker.models.NoteModel;
 import org.wgu.termtracker.models.TermModel;
 
 import java.util.List;
@@ -44,6 +46,9 @@ public class CourseViewActivity extends AppCompatActivity {
 
     @Inject
     AssessmentManager assessmentManager;
+
+    @Inject
+    NoteManager noteManager;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -69,6 +74,9 @@ public class CourseViewActivity extends AppCompatActivity {
     @BindView(R.id.assessmentListView)
     NonScrollListView assessmentList;
 
+    @BindView(R.id.courseNoteListView)
+    NonScrollListView courseNoteList;
+
     protected TermModel term;
 
     protected CourseModel course;
@@ -76,6 +84,8 @@ public class CourseViewActivity extends AppCompatActivity {
     protected ArrayAdapter<CourseMentorModel> courseMentorListAdapter;
 
     protected ArrayAdapter<AssessmentModel> assessmentListAddapter;
+
+    protected ArrayAdapter<NoteModel> courseNoteListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +115,7 @@ public class CourseViewActivity extends AppCompatActivity {
         List<CourseMentorModel> courseMentors = courseMentorManager.listCourseMentors(
                 course.getCourseId());
 
-        courseMentorListAdapter = new ArrayAdapter<CourseMentorModel>(this,
+        courseMentorListAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, courseMentors);
         courseMentorList.setAdapter(courseMentorListAdapter);
         courseMentorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,13 +127,25 @@ public class CourseViewActivity extends AppCompatActivity {
 
         List<AssessmentModel> assessments = assessmentManager.listAssessments(course.getCourseId());
 
-        assessmentListAddapter = new ArrayAdapter<AssessmentModel>(this,
+        assessmentListAddapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, assessments);
         assessmentList.setAdapter(assessmentListAddapter);
         assessmentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseViewActivity.this.onAssessmentClick(position, id);
+            }
+        });
+
+        List<NoteModel> courseNotes = noteManager.listCourseNotes(course.getCourseId());
+
+        courseNoteListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, courseNotes);
+        courseNoteList.setAdapter(courseNoteListAdapter);
+        courseNoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //
             }
         });
     }
@@ -198,7 +220,7 @@ public class CourseViewActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: Check if there are any assessment

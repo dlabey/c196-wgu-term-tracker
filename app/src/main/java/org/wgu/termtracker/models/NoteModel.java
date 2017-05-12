@@ -42,4 +42,9 @@ public class NoteModel {
     public void setPhotoUri(String photoUri) {
         this.photoUri = photoUri;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s", text);
+    }
 }

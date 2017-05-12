@@ -2,12 +2,20 @@ package org.wgu.termtracker.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import org.apache.commons.lang.StringUtils;
+import org.wgu.termtracker.enums.CourseStatusEnum;
 import org.wgu.termtracker.enums.NoteTypeEnum;
+import org.wgu.termtracker.models.CourseMentorModel;
+import org.wgu.termtracker.models.NoteModel;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -161,5 +169,101 @@ public class NoteManager extends DBManager implements NoteContract {
         }
 
         return deleted;
+    }
+
+    public List<NoteModel> listCourseNotes(long courseId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String noteIdCol = String.format("%s.%s", NoteEntry.TABLE_NAME, BaseColumns._ID);
+
+        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TYPE,
+                NoteEntry.COLUMN_NAME_TEXT, NoteEntry.COLUMN_NAME_PHOTO_URI };
+
+        String selection = String.format("%s = ? AND %s.%s = %s.%s",
+                CourseNoteEntry.COLUMN_NAME_COURSE_ID,
+                CourseNoteEntry.TABLE_NAME, CourseNoteEntry.COLUMN_NAME_NOTE_ID,
+                NoteEntry.TABLE_NAME, BaseColumns._ID);
+        String[] selectionArgs = { String.valueOf(courseId) };
+
+        String sortOrder = noteIdCol;
+
+        String tables = String.format("%s, %s", CourseNoteEntry.TABLE_NAME, NoteEntry.TABLE_NAME);
+
+        Cursor cursor = db.query(tables, projection, selection, selectionArgs,
+                null, null, sortOrder);
+
+        List<NoteModel> courseNotes = new LinkedList<>();
+
+        while(cursor.moveToNext()) {
+            long noteId = cursor.getLong(0);
+            NoteTypeEnum type = NoteTypeEnum.valueOf(cursor.getInt(
+                    cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TYPE)
+            ));
+            String text = cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TEXT));
+            String photoUri = cursor.getString(cursor.getColumnIndex(
+                    NoteEntry.COLUMN_NAME_PHOTO_URI));
+
+            NoteModel courseNote = new NoteModel();
+            courseNote.setNoteId(noteId);
+            courseNote.setType(type);
+            courseNote.setText(text);
+            courseNote.setPhotoUri(photoUri);
+
+            courseNotes.add(courseNote);
+        }
+        cursor.close();
+
+        Log.d(TAG, "Course Notes");
+        Log.d(TAG, String.valueOf(courseNotes.size()));
+
+        return courseNotes;
+    }
+
+    public List<NoteModel> listAssessmentNotes(long assessmentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String noteIdCol = String.format("%s.%s", NoteEntry.TABLE_NAME, BaseColumns._ID);
+
+        String[] projection = { noteIdCol, NoteEntry.COLUMN_NAME_TYPE,
+                NoteEntry.COLUMN_NAME_TEXT, NoteEntry.COLUMN_NAME_PHOTO_URI };
+
+        String selection = String.format("%s = ? AND %s.%s = %s.%s",
+                AssessmentNoteEntry.COLUMN_NAME_ASSESSMENT_ID,
+                AssessmentNoteEntry.TABLE_NAME, AssessmentNoteEntry.COLUMN_NAME_NOTE_ID,
+                NoteEntry.TABLE_NAME, BaseColumns._ID);
+        String[] selectionArgs = { String.valueOf(assessmentId) };
+
+        String sortOrder = noteIdCol;
+
+        String tables = String.format("%s, %s", AssessmentNoteEntry.TABLE_NAME, NoteEntry.TABLE_NAME);
+
+        Cursor cursor = db.query(tables, projection, selection, selectionArgs,
+                null, null, sortOrder);
+
+        List<NoteModel> assessmentNotes = new LinkedList<>();
+
+        while(cursor.moveToNext()) {
+            long noteId = cursor.getLong(0);
+            NoteTypeEnum type = NoteTypeEnum.valueOf(cursor.getInt(
+                    cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TYPE)
+            ));
+            String text = cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_NAME_TEXT));
+            String photoUri = cursor.getString(cursor.getColumnIndex(
+                    NoteEntry.COLUMN_NAME_PHOTO_URI));
+
+            NoteModel assessmentNote = new NoteModel();
+            assessmentNote.setNoteId(noteId);
+            assessmentNote.setType(type);
+            assessmentNote.setText(text);
+            assessmentNote.setPhotoUri(photoUri);
+
+            assessmentNotes.add(assessmentNote);
+        }
+        cursor.close();
+
+        Log.d(TAG, "Assessment Notes");
+        Log.d(TAG, String.valueOf(assessmentNotes.size()));
+
+        return assessmentNotes;
     }
 }

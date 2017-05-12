@@ -13,7 +13,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        app:title="Course Mentor"
+        app:title="Assessment"
         app:titleTextColor="@android:color/white"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
@@ -70,6 +70,14 @@
                 android:id="@+id/typeTextView"
                 style="@style/AppTextViewContentStyle"
                 android:text="" />
+
+            <TextView
+                style="@style/AppTextViewStyle"
+                android:text="Notes" />
+
+            <org.wgu.termtracker.layout.NonScrollListView
+                android:id="@+id/assessmentNoteListView"
+                style="@style/AppInnerListViewStyle" />
 
         </LinearLayout>
 

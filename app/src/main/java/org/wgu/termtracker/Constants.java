@@ -19,6 +19,8 @@ public interface Constants {
 
     public static String NOTE_FOR_TYPE = "note_for_type";
 
+    public static String OK = "OK";
+
     public static String TERM = "term";
 
     public static String TYPE = "type";

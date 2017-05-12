@@ -111,7 +111,7 @@ public class CourseMentorViewActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         courseMentorManager.deleteCourseMentor(courseMentor.getCourseMentorId());

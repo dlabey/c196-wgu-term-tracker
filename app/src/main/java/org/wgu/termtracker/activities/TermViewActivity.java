@@ -140,7 +140,7 @@ public class TermViewActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: Check if there are any courses

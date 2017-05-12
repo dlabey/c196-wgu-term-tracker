@@ -74,10 +74,9 @@
                     app:srcCompat="@android:drawable/ic_input_add"
                     android:onClick="onPhotoButtonClick" />
 
-                <TextView
-                    android:id="@+id/photoTextView"
-                    style="@style/AppTextViewInlineContentStyle"
-                    android:text="fileName.ext" />
+                <EditText
+                    android:id="@+id/photoEditText"
+                    style="@style/AppTextViewInlineContentStyle" />
 
             </LinearLayout>
 

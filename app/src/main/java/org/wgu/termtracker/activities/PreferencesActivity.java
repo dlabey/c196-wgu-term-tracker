@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.wgu.termtracker.App;
+import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.enums.SharingMethodEnum;
@@ -86,7 +87,7 @@ public class PreferencesActivity extends AppCompatActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this).create();
 
         alertDialog.setTitle("Notice");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, Constants.OK,
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
