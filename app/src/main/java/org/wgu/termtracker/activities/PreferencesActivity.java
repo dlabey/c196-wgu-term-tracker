@@ -10,7 +10,6 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-import org.wgu.termtracker.App;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.PreferencesManager;
@@ -57,7 +56,7 @@ public class PreferencesActivity extends AppCompatActivity {
         courseAlerts.setChecked(prefs.isCourseAlerts());
         courseAlertMinutes.setProgress(prefs.getCourseAlertMinutes());
         assessmentAlerts.setChecked(prefs.isAssessmentAlerts());
-        assessmentAlertMinutes.setProgress(prefs.getAssessmentAlertMinutes());
+        assessmentAlertMinutes.setProgress(prefs.getAssessmentAlertDays());
         sharingMethod.setChecked(prefs.getSharingMethod() == SharingMethodEnum.SMS);
     }
 

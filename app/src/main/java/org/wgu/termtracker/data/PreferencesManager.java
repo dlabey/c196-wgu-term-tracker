@@ -1,6 +1,5 @@
 package org.wgu.termtracker.data;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -42,7 +41,7 @@ public class PreferencesManager implements PreferencesContract {
         preferences.setCourseAlerts(isCourseAlerts);
         preferences.setCourseAlertMinutes(courseAlertMinutes);
         preferences.setAssessmentAlerts(isAssessmentAlerts);
-        preferences.setAssessmentAlertMinutes(assessmentAlertMinutes);
+        preferences.setAssessmentAlertDays(assessmentAlertMinutes);
         preferences.setSharingMethod(sharingMethod);
 
         return preferences;

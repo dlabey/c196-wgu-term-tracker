@@ -26,18 +26,18 @@ import com.mobsandgeeks.saripaar.annotation.Select;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.AssessmentManager;
+import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.enums.AssessmentTypeEnum;
-import org.wgu.termtracker.enums.CourseStatusEnum;
 import org.wgu.termtracker.models.AssessmentModel;
-import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.CourseModel;
+import org.wgu.termtracker.models.PreferencesModel;
 import org.wgu.termtracker.models.TermModel;
 import org.wgu.termtracker.notifications.NotificationScheduler;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -49,8 +49,16 @@ public class AssessmentInputActivity extends AppCompatActivity
         implements Validator.ValidationListener {
     private static final String TAG = "AssessmentInputActivity";
 
+    protected static String ASSESSMENT_NOTIFICATION_TITLE = "Assessment Notification";
+
+    protected static String ASSESSMENT_NOTIFICATION_CONTENT = "Assessment is due in %s days for " +
+            "%s assessment %s";
+
     @Inject
     AssessmentManager assessmentManager;
+
+    @Inject
+    PreferencesManager preferencesManager;
 
     @Inject
     NotificationScheduler notificationScheduler;
@@ -70,6 +78,8 @@ public class AssessmentInputActivity extends AppCompatActivity
     @BindView(R.id.typeSpinner)
     @Select
     Spinner assessmentType;
+
+    protected PreferencesModel preferences;
 
     protected String type;
 
@@ -94,6 +104,8 @@ public class AssessmentInputActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setSupportActionBar(actionBar);
+
+        preferences = preferencesManager.getPreferences();
 
         type = getIntent().getStringExtra(Constants.TYPE);
 
@@ -175,6 +187,9 @@ public class AssessmentInputActivity extends AppCompatActivity
     public void onValidationSucceeded() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
+        long notificationDelay = TimeUnit.MILLISECONDS.convert(preferences.getAssessmentAlertDays(),
+                TimeUnit.DAYS);
+
         try {
             Date dueDateParsed = simpleDateFormat.parse(dueDate.getText().toString());
 
@@ -185,6 +200,14 @@ public class AssessmentInputActivity extends AppCompatActivity
                             (AssessmentTypeEnum) assessmentType.getSelectedItem());
 
                     saveAlert(newAssessmentId > 0);
+
+                    // TODO handle error
+                    String content = String.format(ASSESSMENT_NOTIFICATION_CONTENT,
+                            preferences.getAssessmentAlertDays(), assessment.getType().toString(),
+                            assessment.getTitle());
+
+                    notificationScheduler.scheduleNotification(delay, (int) assessment.getAssessmentId(),
+                            term, course, assessment, ASSESSMENT_NOTIFICATION_TITLE, content);
                     break;
                 case Constants.EDIT:
                     boolean assessmentUpdated = assessmentManager.updateAssessment(
@@ -192,6 +215,8 @@ public class AssessmentInputActivity extends AppCompatActivity
                             (AssessmentTypeEnum) assessmentType.getSelectedItem());
 
                     saveAlert(assessmentUpdated);
+
+                    // TODO handle reschedule
                     break;
             }
         } catch (ParseException ex) {
@@ -223,6 +248,8 @@ public class AssessmentInputActivity extends AppCompatActivity
                         dialog.dismiss();
 
                         if (result) {
+
+
                             Intent intent = new Intent(AssessmentInputActivity.this,
                                     CourseViewActivity.class);
 
@@ -237,8 +264,6 @@ public class AssessmentInputActivity extends AppCompatActivity
 
         if (result) {
             alertDialog.setMessage("Assessment saved");
-
-            notificationScheduler.scheduleNotification();
         } else {
             alertDialog.setMessage("Error, Assessment not saved");
         }

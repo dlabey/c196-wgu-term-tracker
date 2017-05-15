@@ -27,6 +27,10 @@ public class NotificationScheduler {
         // already scheduled
     }
 
+    public void rescheduleNotification(long delay, int notificationId) {
+
+    }
+
     public void scheduleNotification(long delay, int notificationId, TermModel term,
                                      CourseModel course, String title, String content) {
         this.scheduleNotification(delay, notificationId, term, course, null, title, content);

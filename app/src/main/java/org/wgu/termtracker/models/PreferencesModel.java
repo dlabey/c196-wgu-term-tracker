@@ -9,7 +9,7 @@ public class PreferencesModel {
 
     private boolean isAssessmentAlerts;
 
-    private int assessmentAlertMinutes;
+    private int assessmentAlertDays;
 
     private SharingMethodEnum sharingMethod;
 
@@ -37,12 +37,12 @@ public class PreferencesModel {
         isAssessmentAlerts = assessmentAlerts;
     }
 
-    public int getAssessmentAlertMinutes() {
-        return assessmentAlertMinutes;
+    public int getAssessmentAlertDays() {
+        return assessmentAlertDays;
     }
 
-    public void setAssessmentAlertMinutes(int assessmentAlertMinutes) {
-        this.assessmentAlertMinutes = assessmentAlertMinutes;
+    public void setAssessmentAlertDays(int assessmentAlertDays) {
+        this.assessmentAlertDays = assessmentAlertDays;
     }
 
     public SharingMethodEnum getSharingMethod() {
