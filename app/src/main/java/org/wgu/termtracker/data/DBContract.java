@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 
 @Singleton
 interface DBContract {
-
     static class AssessmentEntry implements BaseColumns {
         static final String TABLE_NAME = "assessments";
         static final String COLUMN_NAME_COURSE_ID = "course_id";

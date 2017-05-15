@@ -1,7 +1,5 @@
 package org.wgu.termtracker.activities;
 
-import org.wgu.termtracker.AppModule;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

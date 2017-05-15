@@ -26,10 +26,6 @@ import dagger.android.AndroidInjection;
 public class PreferencesActivity extends AppCompatActivity {
 
     private static final String TAG = "PreferencesActivity";
-
-    @Inject
-    App app;
-
     @Inject
     PreferencesManager prefsManager;
 

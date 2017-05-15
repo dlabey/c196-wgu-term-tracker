@@ -9,6 +9,7 @@ import org.wgu.termtracker.data.CourseMentorManager;
 import org.wgu.termtracker.data.NoteManager;
 import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.data.TermManager;
+import org.wgu.termtracker.notifications.NotificationScheduler;
 
 import javax.inject.Singleton;
 
@@ -33,7 +34,7 @@ public class AppModule {
     @Singleton
     @Provides
     PreferencesManager providePreferencesManager() {
-        return new PreferencesManager(app);
+        return new PreferencesManager(app.getBaseContext());
     }
 
     @Singleton
@@ -60,5 +61,11 @@ public class AppModule {
     @Provides
     NoteManager provideNoteManager() {
         return new NoteManager(app.getBaseContext());
+    }
+
+    @Singleton
+    @Provides
+    NotificationScheduler provideNotificationScheduler() {
+        return new NotificationScheduler(app.getBaseContext());
     }
 }

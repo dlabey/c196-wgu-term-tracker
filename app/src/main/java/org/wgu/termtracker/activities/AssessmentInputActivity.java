@@ -32,6 +32,7 @@ import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseMentorModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.TermModel;
+import org.wgu.termtracker.notifications.NotificationScheduler;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -50,6 +51,9 @@ public class AssessmentInputActivity extends AppCompatActivity
 
     @Inject
     AssessmentManager assessmentManager;
+
+    @Inject
+    NotificationScheduler notificationScheduler;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -233,6 +237,8 @@ public class AssessmentInputActivity extends AppCompatActivity
 
         if (result) {
             alertDialog.setMessage("Assessment saved");
+
+            notificationScheduler.scheduleNotification();
         } else {
             alertDialog.setMessage("Error, Assessment not saved");
         }

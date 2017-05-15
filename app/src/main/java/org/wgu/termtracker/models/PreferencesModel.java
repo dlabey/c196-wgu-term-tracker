@@ -3,7 +3,6 @@ package org.wgu.termtracker.models;
 import org.wgu.termtracker.enums.SharingMethodEnum;
 
 public class PreferencesModel {
-
     private boolean isCourseAlerts;
 
     private int courseAlertMinutes;

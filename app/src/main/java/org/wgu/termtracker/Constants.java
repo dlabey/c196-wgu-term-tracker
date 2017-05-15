@@ -21,6 +21,10 @@ public interface Constants {
 
     public static String NOTE_FOR_TYPE = "note_for_type";
 
+    public static String NOTIFICATION = "notification";
+
+    public static String NOTIFICATION_ID = "notification_id";
+
     public static String OK = "OK";
 
     public static String TERM = "term";
