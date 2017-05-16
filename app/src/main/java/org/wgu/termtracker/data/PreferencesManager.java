@@ -39,7 +39,7 @@ public class PreferencesManager implements PreferencesContract {
 
         PreferencesModel preferences = new PreferencesModel();
         preferences.setCourseAlerts(isCourseAlerts);
-        preferences.setCourseAlertMinutes(courseAlertMinutes);
+        preferences.setCourseAlertDays(courseAlertMinutes);
         preferences.setAssessmentAlerts(isAssessmentAlerts);
         preferences.setAssessmentAlertDays(assessmentAlertMinutes);
         preferences.setSharingMethod(sharingMethod);

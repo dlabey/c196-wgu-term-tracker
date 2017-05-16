@@ -187,6 +187,8 @@ public class AssessmentInputActivity extends AppCompatActivity
     public void onValidationSucceeded() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
+        boolean actionSuccessful = false;
+
         long notificationDelay = TimeUnit.MILLISECONDS.convert(preferences.getAssessmentAlertDays(),
                 TimeUnit.DAYS);
 
@@ -199,28 +201,34 @@ public class AssessmentInputActivity extends AppCompatActivity
                             title.getText().toString(), dueDateParsed,
                             (AssessmentTypeEnum) assessmentType.getSelectedItem());
 
-                    saveAlert(newAssessmentId > 0);
+                    actionSuccessful = newAssessmentId > 0;
 
-                    // TODO handle error
-                    String content = String.format(ASSESSMENT_NOTIFICATION_CONTENT,
-                            preferences.getAssessmentAlertDays(), assessment.getType().toString(),
-                            assessment.getTitle());
-
-                    notificationScheduler.scheduleNotification(delay, (int) assessment.getAssessmentId(),
-                            term, course, assessment, ASSESSMENT_NOTIFICATION_TITLE, content);
+                    saveAlert(actionSuccessful);
                     break;
                 case Constants.EDIT:
-                    boolean assessmentUpdated = assessmentManager.updateAssessment(
+                    actionSuccessful = assessmentManager.updateAssessment(
                             assessment.getAssessmentId(), title.getText().toString(), dueDateParsed,
                             (AssessmentTypeEnum) assessmentType.getSelectedItem());
 
-                    saveAlert(assessmentUpdated);
-
-                    // TODO handle reschedule
+                    saveAlert(actionSuccessful);
                     break;
             }
         } catch (ParseException ex) {
             Log.e(TAG, ex.getMessage());
+        }
+
+        if (actionSuccessful) {
+            // due date (goal) alert
+            String content = String.format(ASSESSMENT_NOTIFICATION_CONTENT,
+                    preferences.getAssessmentAlertDays(), assessment.getType().toString(),
+                    assessment.getTitle());
+
+            // due delay
+            long dueDelay = assessment.getDueDate().getTime() - notificationDelay;
+
+            notificationScheduler.scheduleNotification(AssessmentViewActivity.class,
+                    dueDelay, (int) assessment.getAssessmentId(), term, course, assessment,
+                    ASSESSMENT_NOTIFICATION_TITLE, content);
         }
     }
 

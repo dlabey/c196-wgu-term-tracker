@@ -54,7 +54,7 @@ public class PreferencesActivity extends AppCompatActivity {
         PreferencesModel prefs = this.prefsManager.getPreferences();
 
         courseAlerts.setChecked(prefs.isCourseAlerts());
-        courseAlertMinutes.setProgress(prefs.getCourseAlertMinutes());
+        courseAlertMinutes.setProgress(prefs.getCourseAlertDays());
         assessmentAlerts.setChecked(prefs.isAssessmentAlerts());
         assessmentAlertMinutes.setProgress(prefs.getAssessmentAlertDays());
         sharingMethod.setChecked(prefs.getSharingMethod() == SharingMethodEnum.SMS);

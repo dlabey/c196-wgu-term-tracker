@@ -5,7 +5,7 @@ import org.wgu.termtracker.enums.SharingMethodEnum;
 public class PreferencesModel {
     private boolean isCourseAlerts;
 
-    private int courseAlertMinutes;
+    private int courseAlertDays;
 
     private boolean isAssessmentAlerts;
 
@@ -21,12 +21,12 @@ public class PreferencesModel {
         isCourseAlerts = courseAlerts;
     }
 
-    public int getCourseAlertMinutes() {
-        return courseAlertMinutes;
+    public int getCourseAlertDays() {
+        return courseAlertDays;
     }
 
-    public void setCourseAlertMinutes(int courseAlertMinutes) {
-        this.courseAlertMinutes = courseAlertMinutes;
+    public void setCourseAlertDays(int courseAlertDays) {
+        this.courseAlertDays = courseAlertDays;
     }
 
     public boolean isAssessmentAlerts() {

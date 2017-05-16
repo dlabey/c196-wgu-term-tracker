@@ -26,14 +26,18 @@ import com.mobsandgeeks.saripaar.annotation.Select;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.CourseManager;
+import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.enums.CourseStatusEnum;
 import org.wgu.termtracker.models.CourseModel;
+import org.wgu.termtracker.models.PreferencesModel;
 import org.wgu.termtracker.models.TermModel;
+import org.wgu.termtracker.notifications.NotificationScheduler;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -44,8 +48,22 @@ import dagger.android.AndroidInjection;
 public class CourseInputActivity extends AppCompatActivity implements Validator.ValidationListener {
     private static final String TAG = "CourseInputActivity";
 
+    protected static String COURSE_NOTIFICATION_TITLE = "Course Notification";
+
+    protected static String COURSE_START_NOTIFICATION_CONTENT = "Course is starting in %s days " +
+            "for course %s";
+
+    protected static String COURSE_END_NOTIFICATION_CONTENT = "Course is ending in %s days " +
+            "for course %s";
+
     @Inject
     CourseManager courseManager;
+
+    @Inject
+    PreferencesManager preferencesManager;
+
+    @Inject
+    NotificationScheduler notificationScheduler;
 
     @BindView(R.id.actionBar)
     Toolbar actionBar;
@@ -73,6 +91,8 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
     @Select
     Spinner status;
 
+    protected PreferencesModel preferences;
+
     protected String type;
 
     protected DatePickerDialog datePickerDialog;
@@ -96,6 +116,8 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         ButterKnife.bind(this);
 
         setSupportActionBar(actionBar);
+
+        preferences = preferencesManager.getPreferences();
 
         type = getIntent().getStringExtra(Constants.TYPE);
 
@@ -200,6 +222,11 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
     public void onValidationSucceeded() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
+        boolean actionSuccessful = false;
+
+         long notificationDelay = TimeUnit.MILLISECONDS.convert(preferences.getCourseAlertDays(),
+                TimeUnit.DAYS);
+
         try {
             Date startDateParsed = simpleDateFormat.parse(startDate.getText().toString());
             Date anticipatedEndDateParsed = simpleDateFormat.parse(anticipatedEndDate.getText()
@@ -219,20 +246,48 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
                                 anticipatedEndDateParsed, dueDateParsed,
                                 (CourseStatusEnum) status.getSelectedItem());
 
-                        saveAlert(newCourseId > 0);
+                        actionSuccessful = newCourseId > 0;
+
+                        saveAlert(actionSuccessful);
                         break;
                     case Constants.EDIT:
-                        boolean courseUpdated = courseManager.updateCourse(course.getCourseId(),
+                        actionSuccessful = courseManager.updateCourse(course.getCourseId(),
                                 title.getText().toString(), startDateParsed,
                                 anticipatedEndDateParsed, dueDateParsed,
                                 (CourseStatusEnum) status.getSelectedItem());
 
-                        saveAlert(courseUpdated);
+                        saveAlert(actionSuccessful);
                         break;
                 }
             }
         } catch (ParseException ex) {
             Log.e(TAG, ex.getMessage());
+        }
+
+        if (actionSuccessful) {
+            // start notification alert
+            String content = String.format(COURSE_START_NOTIFICATION_CONTENT,
+                    preferences.getCourseAlertDays(), course.getTitle());
+
+            // start delay
+            long startDelay = course.getStartDate().getTime() - notificationDelay;
+
+            // use the 10000s for start
+            notificationScheduler.scheduleNotification(CourseViewActivity.class, startDelay,
+                    (int) (10000 + course.getCourseId()), term, course, COURSE_NOTIFICATION_TITLE,
+                    content);
+
+            // end notification alert
+            content = String.format(COURSE_END_NOTIFICATION_CONTENT,
+                    preferences.getCourseAlertDays(), course.getTitle());
+
+            // end delay
+            long endDelay = course.getDueDate().getTime() - notificationDelay;
+
+            // use the 20000s for end
+            notificationScheduler.scheduleNotification(CourseViewActivity.class, endDelay,
+                    (int) (20000 + course.getCourseId()), term, course, COURSE_NOTIFICATION_TITLE,
+                    content);
         }
     }
 

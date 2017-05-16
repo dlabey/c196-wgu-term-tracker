@@ -8,47 +8,51 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import org.wgu.termtracker.Constants;
+import org.wgu.termtracker.R;
 import org.wgu.termtracker.activities.HomeActivity;
 import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.TermModel;
 
 public class NotificationScheduler {
+    private static final String TAG = "NotificationScheduler";
+
     protected Context context;
 
     public NotificationScheduler(Context context) {
         this.context = context;
     }
 
-    public void bootNotifications() {
-        // go through courses and assessments based on notification preferences and schedule if not
-        // already scheduled
-    }
-
-    public void rescheduleNotification(long delay, int notificationId) {
-
-    }
-
-    public void scheduleNotification(long delay, int notificationId, TermModel term,
+    public void scheduleNotification(Class forClass, long delay, int notificationId, TermModel term,
                                      CourseModel course, String title, String content) {
-        this.scheduleNotification(delay, notificationId, term, course, null, title, content);
+        this.scheduleNotification(forClass, delay, notificationId, term, course, null, title,
+                content);
     }
 
-    public void scheduleNotification(long delay, int notificationId, TermModel term,
+    public void scheduleNotification(Class forClass, long delay, int notificationId, TermModel term,
                                      CourseModel course, AssessmentModel assessment, String title,
                                      String content) {
+        Log.d(TAG, term.toString());
+        Log.d(TAG, course.toString());
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setAutoCancel(true)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-        Intent intent = new Intent(context, HomeActivity.class);
+        Intent intent = new Intent(context, forClass);
+
+        intent.putExtra(Constants.TERM, term);
+        intent.putExtra(Constants.COURSE, course);
+        intent.putExtra(Constants.ASSESSMENT, assessment);
 
         PendingIntent activity = PendingIntent.getActivity(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(activity);
 
@@ -58,17 +62,14 @@ public class NotificationScheduler {
 
         notificationIntent.putExtra(Constants.NOTIFICATION_ID, notificationId);
         notificationIntent.putExtra(Constants.NOTIFICATION, notification);
-        notificationIntent.putExtra(Constants.TERM, term);
-        notificationIntent.putExtra(Constants.COURSE, course);
-        notificationIntent.putExtra(Constants.ASSESSMENT, assessment);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId,
                 notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        Log.d(TAG, String.valueOf(delay));
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
     }
 }
