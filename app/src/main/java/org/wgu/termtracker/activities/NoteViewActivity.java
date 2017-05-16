@@ -123,6 +123,8 @@ public class NoteViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.shareNote:
+                break;
             case R.id.editNote:
                 this.onEditClick(item.getActionView());
                 break;
