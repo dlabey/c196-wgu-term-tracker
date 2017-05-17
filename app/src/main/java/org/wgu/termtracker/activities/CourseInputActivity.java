@@ -264,7 +264,7 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
             Log.e(TAG, ex.getMessage());
         }
 
-        if (actionSuccessful) {
+        if (preferences.isCourseAlerts() && actionSuccessful) {
             // start notification alert
             String content = String.format(COURSE_START_NOTIFICATION_CONTENT,
                     preferences.getCourseAlertDays(), course.getTitle());

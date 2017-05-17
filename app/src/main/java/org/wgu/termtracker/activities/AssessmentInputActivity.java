@@ -217,7 +217,7 @@ public class AssessmentInputActivity extends AppCompatActivity
             Log.e(TAG, ex.getMessage());
         }
 
-        if (actionSuccessful) {
+        if (preferences.isAssessmentAlerts() && actionSuccessful) {
             // due date (goal) alert
             String content = String.format(ASSESSMENT_NOTIFICATION_CONTENT,
                     preferences.getAssessmentAlertDays(), assessment.getType().toString(),

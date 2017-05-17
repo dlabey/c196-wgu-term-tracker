@@ -20,11 +20,13 @@
         app:titleTextColor="@android:color/white"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        android:layout_height="0dp"
+        android:layout_width="0dp" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -84,17 +86,6 @@
                 style="@style/AppDiscreteSeekBar"
                 app:dsb_max="15"
                 app:dsb_min="5" />
-
-            <TextView
-                style="@style/AppTextViewStyle"
-                android:text="Sharing Method" />
-
-            <ToggleButton
-                android:id="@+id/sharingMethodToggleButton"
-                style="@style/AppToggleButton"
-                android:showText="true"
-                android:textOff="Email"
-                android:textOn="SMS" />
 
             <Button
                 android:id="@+id/saveButton"

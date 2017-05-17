@@ -17,9 +17,11 @@ import android.widget.TextView;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.NoteManager;
+import org.wgu.termtracker.data.PreferencesManager;
 import org.wgu.termtracker.models.AssessmentModel;
 import org.wgu.termtracker.models.CourseModel;
 import org.wgu.termtracker.models.NoteModel;
+import org.wgu.termtracker.models.PreferencesModel;
 import org.wgu.termtracker.models.TermModel;
 
 import javax.inject.Inject;
@@ -34,6 +36,9 @@ public class NoteViewActivity extends AppCompatActivity {
     @Inject
     NoteManager noteManager;
 
+    @Inject
+    PreferencesManager preferencesManager;
+
     @BindView(R.id.actionBar)
     Toolbar actionBar;
 
@@ -42,6 +47,8 @@ public class NoteViewActivity extends AppCompatActivity {
 
     @BindView(R.id.photoImageView)
     ImageView photo;
+
+    protected PreferencesModel preferences;
 
     protected String noteForType;
 
@@ -64,6 +71,8 @@ public class NoteViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(actionBar);
+
+        preferences = preferencesManager.getPreferences();
 
         noteForType = getIntent().getStringExtra(Constants.NOTE_FOR_TYPE);
 
@@ -124,6 +133,7 @@ public class NoteViewActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.shareNote:
+                this.onShareClick(item.getActionView());
                 break;
             case R.id.editNote:
                 this.onEditClick(item.getActionView());
@@ -228,5 +238,25 @@ public class NoteViewActivity extends AppCompatActivity {
         startActivity(intent);
 
         Log.d(TAG, String.format("onEditClick", note.getNoteId()));
+    }
+
+    protected void onShareClick(View view) {
+        Intent intent = new Intent();
+
+        intent.setAction(Intent.ACTION_SEND);
+
+        if (note.getPhotoUri() == null) {
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, note.getText());
+        } else {
+            String photoUriStr = note.getPhotoUri();
+
+            Uri photoUri = Uri.parse(photoUriStr);
+
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_STREAM, photoUri);
+        }
+
+        startActivity(intent);
     }
 }

@@ -13,7 +13,6 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
 import org.wgu.termtracker.data.PreferencesManager;
-import org.wgu.termtracker.enums.SharingMethodEnum;
 import org.wgu.termtracker.models.PreferencesModel;
 
 import javax.inject.Inject;
@@ -40,9 +39,6 @@ public class PreferencesActivity extends AppCompatActivity {
     @BindView(R.id.assessmentAlertMinutesDiscreteSeekBar)
     DiscreteSeekBar assessmentAlertMinutes;
 
-    @BindView(R.id.sharingMethodToggleButton)
-    ToggleButton sharingMethod;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -57,7 +53,6 @@ public class PreferencesActivity extends AppCompatActivity {
         courseAlertMinutes.setProgress(prefs.getCourseAlertDays());
         assessmentAlerts.setChecked(prefs.isAssessmentAlerts());
         assessmentAlertMinutes.setProgress(prefs.getAssessmentAlertDays());
-        sharingMethod.setChecked(prefs.getSharingMethod() == SharingMethodEnum.SMS);
     }
 
     public void onSaveButtonClick(View view) {
@@ -65,17 +60,14 @@ public class PreferencesActivity extends AppCompatActivity {
         int courseAlertMinutes = this.courseAlertMinutes.getProgress();
         boolean isAssessmentAlerts = assessmentAlerts.isChecked();
         int assessmentAlertMinutes = this.assessmentAlertMinutes.getProgress();
-        SharingMethodEnum sharingMethod = SharingMethodEnum.valueOf(this.sharingMethod.getText()
-                .toString().toUpperCase());
 
         boolean result = this.prefsManager.setPreferences(isCourseAlerts, courseAlertMinutes,
-                isAssessmentAlerts, assessmentAlertMinutes, sharingMethod);
+                isAssessmentAlerts, assessmentAlertMinutes);
 
         saveAlert(result);
 
         Log.d(TAG, prefsManager.toString());
         Log.d(TAG, String.valueOf(result));
-        Log.d(TAG, String.valueOf(prefsManager.getPreferences().getSharingMethod().getValue()));
     }
 
     protected void saveAlert(boolean result) {

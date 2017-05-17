@@ -1,6 +1,5 @@
 package org.wgu.termtracker.data;
 
-import org.wgu.termtracker.enums.SharingMethodEnum;
 import org.wgu.termtracker.models.PreferencesModel;
 
 import javax.inject.Singleton;
@@ -11,6 +10,5 @@ interface PreferencesContract {
     PreferencesModel getPreferences();
 
     boolean setPreferences(boolean isCourseAlerts, int courseAlertMinutes,
-                           boolean isAssessmentAlerts, int assessmentAlertMinutes,
-                           SharingMethodEnum sharingMethod);
+                           boolean isAssessmentAlerts, int assessmentAlertMinutes);
 }
