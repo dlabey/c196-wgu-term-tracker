@@ -99,6 +99,15 @@
                 style="@style/AppInnerListViewStyle" />
 
             <TextView
+                android:id="@+id/emptyCourseMentorListTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="No Course Mentors"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+
+            <TextView
                 style="@style/AppTextViewStyle"
                 android:text="Assessments" />
 
@@ -107,12 +116,30 @@
                 style="@style/AppInnerListViewStyle" />
 
             <TextView
+                android:id="@+id/emptyAssessmentListTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="No Assessments"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+
+            <TextView
                 style="@style/AppTextViewStyle"
                 android:text="Notes" />
 
             <org.wgu.termtracker.layout.NonScrollListView
                 android:id="@+id/courseNoteListView"
                 style="@style/AppInnerListViewStyle" />
+
+            <TextView
+                android:id="@+id/emptyCourseNoteListTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="No Course Notes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
 
         </LinearLayout>
 

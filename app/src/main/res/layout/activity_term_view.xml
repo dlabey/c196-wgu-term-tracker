@@ -79,6 +79,15 @@
                 android:id="@+id/courseListView"
                 style="@style/AppInnerListViewStyle" />
 
+            <TextView
+                android:id="@+id/emptyCourseListTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="No Courses"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+
         </LinearLayout>
 
     </ScrollView>

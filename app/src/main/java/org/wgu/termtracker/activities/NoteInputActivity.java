@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.apache.commons.lang.StringUtils;
 import org.wgu.termtracker.App;
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
@@ -123,6 +126,28 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 photoText.setText(photoUriStr);
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+        }
+
+        return false;
     }
 
     @Override
@@ -247,6 +272,10 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
                 }
                 break;
             case Constants.EDIT:
+                if (StringUtils.isEmpty(photoUriStr) && !StringUtils.isEmpty(note.getPhotoUri())) {
+                    photoUriStr = note.getPhotoUri();
+                }
+
                 boolean noteUpdated = noteManager.updateNote(note.getNoteId(),
                     text.getText().toString(), photoUriStr);
 

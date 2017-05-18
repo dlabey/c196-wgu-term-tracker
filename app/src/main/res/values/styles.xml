@@ -51,6 +51,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">10dp</item>
+        <item name="dsb_progressColor">@color/colorAccent</item>
+        <item name="dsb_indicatorColor">@color/colorAccent</item>
     </style>
 
     <style name="AppToggleButton">

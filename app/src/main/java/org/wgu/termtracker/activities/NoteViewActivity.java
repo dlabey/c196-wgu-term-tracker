@@ -132,6 +132,11 @@ public class NoteViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.shareNote:
                 this.onShareClick(item.getActionView());
                 break;

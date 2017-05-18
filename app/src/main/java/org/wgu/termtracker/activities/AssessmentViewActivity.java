@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
@@ -63,6 +64,9 @@ public class AssessmentViewActivity extends AppCompatActivity {
     @BindView(R.id.assessmentNoteListView)
     NonScrollListView assessmentNoteList;
 
+    @BindView(R.id.emptyAssessmentNoteListTextView)
+    TextView emptyAssessmentNoteList;
+
     protected TermModel term;
 
     protected CourseModel course;
@@ -70,6 +74,8 @@ public class AssessmentViewActivity extends AppCompatActivity {
     protected AssessmentModel assessment;
 
     protected ArrayAdapter<NoteModel> assessmentNoteListAdapter;
+
+    protected List<NoteModel> assessmentNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +99,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
         dueDate.setText(dueDateStr);
         assessmentType.setText(assessment.getType().toString());
 
-        List<NoteModel> assessmentNotes = noteManager.listAssessmentNotes(assessment.getAssessmentId());
+        assessmentNotes = noteManager.listAssessmentNotes(assessment.getAssessmentId());
 
         assessmentNoteListAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, assessmentNotes);
@@ -104,6 +110,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
                 AssessmentViewActivity.this.onAssessmentNoteClick(position, id);
             }
         });
+        assessmentNoteList.setEmptyView(emptyAssessmentNoteList);
     }
 
     @Override
@@ -118,6 +125,11 @@ public class AssessmentViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.editAssessment:
                 this.onEditClick(item.getActionView());
                 break;
@@ -163,17 +175,22 @@ public class AssessmentViewActivity extends AppCompatActivity {
         alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        assessmentManager.deleteAssessment(assessment.getAssessmentId());
+                        if (assessmentNotes.size() > 0) {
+                            Toast.makeText(getBaseContext(), "Error, assessment notes still exist " +
+                                            "for this assessment.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            assessmentManager.deleteAssessment(assessment.getAssessmentId());
 
-                        Intent intent = new Intent(AssessmentViewActivity.this,
-                                CourseViewActivity.class);
+                            Intent intent = new Intent(AssessmentViewActivity.this,
+                                    CourseViewActivity.class);
 
-                        intent.putExtra(Constants.TERM, term);
-                        intent.putExtra(Constants.COURSE, course);
+                            intent.putExtra(Constants.TERM, term);
+                            intent.putExtra(Constants.COURSE, course);
 
-                        startActivity(intent);
+                            startActivity(intent);
 
-                        finish();
+                            finish();
+                        }
                     }
                 }
         );

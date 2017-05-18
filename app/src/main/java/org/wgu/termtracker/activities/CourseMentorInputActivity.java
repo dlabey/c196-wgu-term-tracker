@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -97,6 +99,28 @@ public class CourseMentorInputActivity extends AppCompatActivity implements Vali
             phoneNumber.setText(courseMentor.getPhoneNumber());
             email.setText(courseMentor.getEmail());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+        }
+
+        return false;
     }
 
     public void onSaveButtonClick(View view) {

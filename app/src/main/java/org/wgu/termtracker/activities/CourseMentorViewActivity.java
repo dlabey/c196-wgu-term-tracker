@@ -80,6 +80,11 @@ public class CourseMentorViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.editCourseMentor:
                 this.onEditClick(item.getActionView());
                 break;

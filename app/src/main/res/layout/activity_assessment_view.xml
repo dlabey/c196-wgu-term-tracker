@@ -79,6 +79,15 @@
                 android:id="@+id/assessmentNoteListView"
                 style="@style/AppInnerListViewStyle" />
 
+            <TextView
+                android:id="@+id/emptyAssessmentNoteListTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="No Assessment Notes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+
         </LinearLayout>
 
     </ScrollView>

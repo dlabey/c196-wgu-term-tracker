@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
@@ -77,6 +78,15 @@ public class CourseViewActivity extends AppCompatActivity {
     @BindView(R.id.courseNoteListView)
     NonScrollListView courseNoteList;
 
+    @BindView(R.id.emptyCourseMentorListTextView)
+    TextView emptyCourseMentorList;
+
+    @BindView(R.id.emptyAssessmentListTextView)
+    TextView emptyAssessmentList;
+
+    @BindView(R.id.emptyCourseNoteListTextView)
+    TextView emptyCourseNoteList;
+
     protected TermModel term;
 
     protected CourseModel course;
@@ -86,6 +96,12 @@ public class CourseViewActivity extends AppCompatActivity {
     protected ArrayAdapter<AssessmentModel> assessmentListAddapter;
 
     protected ArrayAdapter<NoteModel> courseNoteListAdapter;
+
+    protected List<CourseMentorModel> courseMentors;
+
+    protected List<AssessmentModel> assessments;
+
+    protected List<NoteModel> courseNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +128,7 @@ public class CourseViewActivity extends AppCompatActivity {
         dueDate.setText(dueDateStr);
         status.setText(course.getStatus().toString());
 
-        List<CourseMentorModel> courseMentors = courseMentorManager.listCourseMentors(
+        courseMentors = courseMentorManager.listCourseMentors(
                 course.getCourseId());
 
         courseMentorListAdapter = new ArrayAdapter<>(this,
@@ -124,8 +140,9 @@ public class CourseViewActivity extends AppCompatActivity {
                 CourseViewActivity.this.onCourseMentorClick(position, id);
             }
         });
+        courseMentorList.setEmptyView(emptyCourseMentorList);
 
-        List<AssessmentModel> assessments = assessmentManager.listAssessments(course.getCourseId());
+        assessments = assessmentManager.listAssessments(course.getCourseId());
 
         assessmentListAddapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, assessments);
@@ -136,8 +153,9 @@ public class CourseViewActivity extends AppCompatActivity {
                 CourseViewActivity.this.onAssessmentClick(position, id);
             }
         });
+        assessmentList.setEmptyView(emptyAssessmentList);
 
-        List<NoteModel> courseNotes = noteManager.listCourseNotes(course.getCourseId());
+        courseNotes = noteManager.listCourseNotes(course.getCourseId());
 
         courseNoteListAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, courseNotes);
@@ -148,6 +166,7 @@ public class CourseViewActivity extends AppCompatActivity {
                 CourseViewActivity.this.onCourseNoteClick(position, id);
             }
         });
+        courseNoteList.setEmptyView(emptyCourseNoteList);
     }
 
     @Override
@@ -162,6 +181,11 @@ public class CourseViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.editCourse:
                 this.onEditClick(item.getActionView());
                 break;
@@ -223,16 +247,22 @@ public class CourseViewActivity extends AppCompatActivity {
         alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO: Check if there are any assessment
-                        courseManager.deleteCourse(course.getCourseId());
+                        if (courseMentors.size() > 0 || assessments.size() > 0 ||
+                                courseNotes.size() > 0) {
+                            Toast.makeText(getBaseContext(), "Error, either course mentors, " +
+                                    "assessments, or course notes still exist for this course.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            courseManager.deleteCourse(course.getCourseId());
 
-                        Intent intent = new Intent(CourseViewActivity.this, TermViewActivity.class);
+                            Intent intent = new Intent(CourseViewActivity.this, TermViewActivity.class);
 
-                        intent.putExtra(Constants.TERM, term);
+                            intent.putExtra(Constants.TERM, term);
 
-                        startActivity(intent);
+                            startActivity(intent);
 
-                        finish();
+                            finish();
+                        }
                     }
                 }
         );

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.WrapperListAdapter;
 
 import org.wgu.termtracker.Constants;
@@ -41,6 +42,9 @@ public class TermListActivity extends AppCompatActivity {
     @BindView(R.id.termListView)
     ListView termList;
 
+    @BindView(R.id.emptyTermListTextView)
+    TextView emptyTermList;
+
     protected ArrayAdapter<TermModel> termListAdapter;
 
     @Override
@@ -64,6 +68,7 @@ public class TermListActivity extends AppCompatActivity {
                 TermListActivity.this.onTermClick(position, id);
             }
         });
+        termList.setEmptyView(emptyTermList);
     }
 
     @Override
@@ -76,6 +81,11 @@ public class TermListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.home:
+                Intent intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.addTerm:
                 this.onAddTermClick(item.getActionView());
                 break;

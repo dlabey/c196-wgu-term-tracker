@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -208,6 +210,28 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+        }
+
+        return false;
+    }
+
     public void onDateClick(View view) {
         dateDialogEditText = (EditText) view;
 
@@ -249,6 +273,17 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
                         actionSuccessful = newCourseId > 0;
 
                         saveAlert(actionSuccessful);
+
+                        // create course model for notification use if successfully created
+                        if (actionSuccessful) {
+                            course = new CourseModel();
+                            course.setCourseId(newCourseId);
+                            course.setTitle(title.getText().toString());
+                            course.setStartDate(startDateParsed);
+                            course.setAnticipatedEndDate(anticipatedEndDateParsed);
+                            course.setDueDate(dueDateParsed);
+                            course.setStatus((CourseStatusEnum) status.getSelectedItem());
+                        }
                         break;
                     case Constants.EDIT:
                         actionSuccessful = courseManager.updateCourse(course.getCourseId(),
@@ -267,7 +302,7 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         if (preferences.isCourseAlerts() && actionSuccessful) {
             // start notification alert
             String content = String.format(COURSE_START_NOTIFICATION_CONTENT,
-                    preferences.getCourseAlertDays(), course.getTitle());
+                    preferences.getCourseAlertDays(), title.getText().toString());
 
             // start delay
             long startDelay = course.getStartDate().getTime() - notificationDelay;

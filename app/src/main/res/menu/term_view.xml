@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/home"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Home"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/editTerm"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit Term"

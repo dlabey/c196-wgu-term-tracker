@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wgu.termtracker.Constants;
 import org.wgu.termtracker.R;
@@ -54,9 +55,14 @@ public class TermViewActivity extends AppCompatActivity {
     @BindView(R.id.courseListView)
     NonScrollListView courseList;
 
+    @BindView(R.id.emptyCourseListTextView)
+    TextView emptyCourseList;
+
     protected TermModel term;
 
     protected ArrayAdapter<CourseModel> courseListAdapter;
+
+    protected List<CourseModel> courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,7 @@ public class TermViewActivity extends AppCompatActivity {
         startDate.setText(startDateStr);
         endDate.setText(endDateStr);
 
-        List<CourseModel> courses = courseManager.listCourses(term.getTermId());
+        courses = courseManager.listCourses(term.getTermId());
 
         courseListAdapter = new ArrayAdapter<CourseModel>(this, android.R.layout.simple_list_item_1,
                 courses);
@@ -90,6 +96,7 @@ public class TermViewActivity extends AppCompatActivity {
                 TermViewActivity.this.onCourseClick(position, id);
             }
         });
+        courseList.setEmptyView(emptyCourseList);
     }
 
     @Override
@@ -104,6 +111,11 @@ public class TermViewActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.editTerm:
                 this.onEditClick(item.getActionView());
                 break;
@@ -143,14 +155,18 @@ public class TermViewActivity extends AppCompatActivity {
         alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, Constants.OK,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO: Check if there are any courses
-                        termManager.deleteTerm(term.getTermId());
+                        if (courses.size() > 0) {
+                            Toast.makeText(getBaseContext(), "Error, courses still exist for this " +
+                                            "term.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            termManager.deleteTerm(term.getTermId());
 
-                        Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
+                            Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
 
-                        startActivity(intent);
+                            startActivity(intent);
 
-                        finish();
+                            finish();
+                        }
                     }
                 }
         );

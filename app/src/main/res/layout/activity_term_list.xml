@@ -40,5 +40,13 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
 
+    <TextView
+        android:id="@+id/emptyTermListTextView"
+        style="@style/AppTextViewContentStyle"
+        android:text="No Terms"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        />
 
 </android.support.constraint.ConstraintLayout>

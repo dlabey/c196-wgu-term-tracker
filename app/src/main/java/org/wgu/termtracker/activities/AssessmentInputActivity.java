@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -173,6 +175,28 @@ public class AssessmentInputActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+        }
+
+        return false;
+    }
+
     public void onDateClick(View view) {
         dateDialogEditText = (EditText) view;
 
@@ -204,6 +228,15 @@ public class AssessmentInputActivity extends AppCompatActivity
                     actionSuccessful = newAssessmentId > 0;
 
                     saveAlert(actionSuccessful);
+
+                    // create assessment model for notification use if successfully created
+                    if (actionSuccessful) {
+                        assessment = new AssessmentModel();
+                        assessment.setAssessmentId(newAssessmentId);
+                        assessment.setTitle(title.getText().toString());
+                        assessment.setDueDate(dueDateParsed);
+                        assessment.setType((AssessmentTypeEnum) assessmentType.getSelectedItem());
+                    }
                     break;
                 case Constants.EDIT:
                     actionSuccessful = assessmentManager.updateAssessment(
