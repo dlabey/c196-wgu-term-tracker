@@ -14,6 +14,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -221,7 +222,8 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
 
         File sdImageMainDirectory = new File(root, fileName);
 
-        photoUri = Uri.fromFile(sdImageMainDirectory);
+        photoUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() +
+                ".provider", sdImageMainDirectory);
 
         Log.d(TAG, photoUri.toString());
 
