@@ -71,14 +71,6 @@
                 style="@style/AppTextViewContentStyle"
                 android:text="" />
 
-            <TextView
-                style="@style/AppTextViewStyle"
-                android:text="Assessments" />
-
-            <org.wgu.termtracker.layout.NonScrollListView
-                android:id="@+id/assessmentListView"
-                style="@style/AppInnerListViewStyle" />
-
         </LinearLayout>
 
     </ScrollView>
