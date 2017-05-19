@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -244,6 +245,11 @@ public class AssessmentInputActivity extends AppCompatActivity
                             (AssessmentTypeEnum) assessmentType.getSelectedItem());
 
                     saveAlert(actionSuccessful);
+
+                    // update due date if action successful for immediate use
+                    if (actionSuccessful) {
+                        assessment.setDueDate(dueDateParsed);
+                    }
                     break;
             }
         } catch (ParseException ex) {
@@ -257,7 +263,9 @@ public class AssessmentInputActivity extends AppCompatActivity
                     assessment.getTitle());
 
             // due delay
-            long dueDelay = assessment.getDueDate().getTime() - notificationDelay;
+            long untilDueDate = assessment.getDueDate().getTime() - notificationDelay -
+                System.currentTimeMillis();
+            long dueDelay = SystemClock.currentThreadTimeMillis() + untilDueDate;
 
             notificationScheduler.scheduleNotification(AssessmentViewActivity.class,
                     dueDelay, (int) assessment.getAssessmentId(), term, course, assessment,

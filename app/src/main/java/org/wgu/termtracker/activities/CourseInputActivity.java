@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -292,6 +293,11 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
                                 (CourseStatusEnum) status.getSelectedItem());
 
                         saveAlert(actionSuccessful);
+
+                        // update due date if action successful for immediate use
+                        if (actionSuccessful) {
+                            course.setDueDate(dueDateParsed);
+                        }
                         break;
                 }
             }
@@ -317,10 +323,12 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
                     preferences.getCourseAlertDays(), course.getTitle());
 
             // end delay
-            long endDelay = course.getDueDate().getTime() - notificationDelay;
+            long untilDueDate = course.getDueDate().getTime() - notificationDelay -
+                    System.currentTimeMillis();
+            long dueDelay = SystemClock.currentThreadTimeMillis() + untilDueDate;
 
             // use the 20000s for end
-            notificationScheduler.scheduleNotification(CourseViewActivity.class, endDelay,
+            notificationScheduler.scheduleNotification(CourseViewActivity.class, dueDelay,
                     (int) (20000 + course.getCourseId()), term, course, COURSE_NOTIFICATION_TITLE,
                     content);
         }
