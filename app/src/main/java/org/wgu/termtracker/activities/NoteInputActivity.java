@@ -105,15 +105,29 @@ public class NoteInputActivity extends AppCompatActivity implements Validator.Va
         actionType = getIntent().getStringExtra(Constants.ACTION_TYPE);
         noteForType = getIntent().getStringExtra(Constants.NOTE_FOR_TYPE);
 
+        switch (actionType) {
+            case Constants.ADD:
+                getSupportActionBar().setTitle("Add Note");
+
+                term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
+                course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
+                assessment = (AssessmentModel) getIntent().getSerializableExtra(Constants.ASSESSMENT);
+                note = null;
+                break;
+            case Constants.EDIT:
+                getSupportActionBar().setTitle("Edit Note");
+
+                term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
+                course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
+                assessment = (AssessmentModel) getIntent().getSerializableExtra(Constants.ASSESSMENT);
+                note = (NoteModel) getIntent().getSerializableExtra(Constants.NOTE);
+                break;
+        }
+
         photoText.setKeyListener(null);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
-        term = (TermModel) getIntent().getSerializableExtra(Constants.TERM);
-        course = (CourseModel) getIntent().getSerializableExtra(Constants.COURSE);
-        assessment = (AssessmentModel) getIntent().getSerializableExtra(Constants.ASSESSMENT);
-        note = (NoteModel) getIntent().getSerializableExtra(Constants.NOTE);
 
         checkWritingReadingPermission();
 
