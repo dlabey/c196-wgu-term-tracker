@@ -140,7 +140,7 @@ public class TermViewActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onDeleteClick(View view) {
+    public void onDeleteClick(View view) {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
@@ -175,7 +175,7 @@ public class TermViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onDeleteClick", term.getTermId()));
     }
 
-    protected void onEditClick(View view) {
+    public void onEditClick(View view) {
         Intent intent = new Intent(this, TermInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.EDIT);
@@ -186,7 +186,7 @@ public class TermViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
     }
 
-    protected void onCourseClick(int position, long id) {
+    public void onCourseClick(int position, long id) {
         CourseModel course = courseListAdapter.getItem(position);
 
         Intent intent = new Intent(this, CourseViewActivity.class);

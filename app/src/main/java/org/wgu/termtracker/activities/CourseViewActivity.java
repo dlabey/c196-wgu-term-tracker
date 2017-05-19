@@ -232,7 +232,7 @@ public class CourseViewActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onDeleteClick(View view) {
+    public void onDeleteClick(View view) {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
@@ -271,7 +271,7 @@ public class CourseViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onDeleteClick", term.getTermId()));
     }
 
-    protected void onEditClick(View view) {
+    public void onEditClick(View view) {
         Intent intent = new Intent(this, CourseInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.EDIT);
@@ -283,7 +283,7 @@ public class CourseViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onEditClick", term.getTermId()));
     }
 
-    protected void onCourseMentorClick(int position, long id) {
+    public void onCourseMentorClick(int position, long id) {
         CourseMentorModel courseMentor = courseMentorListAdapter.getItem(position);
 
         Intent intent = new Intent(this, CourseMentorViewActivity.class);
@@ -297,7 +297,7 @@ public class CourseViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("%s", courseMentor.toString()));
     }
 
-    protected void onAssessmentClick(int position, long id) {
+    public void onAssessmentClick(int position, long id) {
         AssessmentModel assessment = assessmentListAddapter.getItem(position);
 
         Intent intent = new Intent(this, AssessmentViewActivity.class);
@@ -311,7 +311,7 @@ public class CourseViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("%s", assessment.toString()));
     }
 
-    protected void onCourseNoteClick(int position, long id) {
+    public void onCourseNoteClick(int position, long id) {
         NoteModel note = courseNoteListAdapter.getItem(position);
 
         Intent intent = new Intent(this, NoteViewActivity.class);

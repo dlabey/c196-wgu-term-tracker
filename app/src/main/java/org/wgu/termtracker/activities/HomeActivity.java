@@ -49,13 +49,13 @@ public class HomeActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onPreferencesClick(View view) {
+    public void onPreferencesClick(View view) {
         Intent intent = new Intent(this, PreferencesActivity.class);
 
         startActivity(intent);
     }
 
-    protected void onManageTermsClick(View view) {
+    public void onManageTermsClick(View view) {
         Intent intent = new Intent(this, TermListActivity.class);
 
         startActivity(intent);

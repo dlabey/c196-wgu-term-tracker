@@ -104,7 +104,7 @@ public class CourseMentorViewActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onDeleteClick(View view) {
+    public void onDeleteClick(View view) {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
@@ -138,7 +138,7 @@ public class CourseMentorViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onDeleteClick", term.getTermId()));
     }
 
-    protected void onEditClick(View view) {
+    public void onEditClick(View view) {
         Intent intent = new Intent(this, CourseMentorInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.EDIT);

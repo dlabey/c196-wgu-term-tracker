@@ -94,7 +94,7 @@ public class TermListActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onAddTermClick(View view) {
+    public void onAddTermClick(View view) {
         Intent intent = new Intent(this, TermInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.ADD);
@@ -102,7 +102,7 @@ public class TermListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void onTermClick(int position, long id) {
+    public void onTermClick(int position, long id) {
         TermModel term = termListAdapter.getItem(position);
 
         Intent intent = new Intent(getBaseContext(), TermViewActivity.class);

@@ -171,7 +171,7 @@ public class NoteViewActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onDeleteClick(View view) {
+    public void onDeleteClick(View view) {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
@@ -222,7 +222,7 @@ public class NoteViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onDeleteClick", note.getNoteId()));
     }
 
-    protected void onEditClick(View view) {
+    public void onEditClick(View view) {
         Intent intent = new Intent(this, NoteInputActivity.class);
 
         switch (noteForType) {
@@ -245,7 +245,7 @@ public class NoteViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onEditClick", note.getNoteId()));
     }
 
-    protected void onShareClick(View view) {
+    public void onShareClick(View view) {
         Intent intent = new Intent();
 
         intent.setAction(Intent.ACTION_SEND);

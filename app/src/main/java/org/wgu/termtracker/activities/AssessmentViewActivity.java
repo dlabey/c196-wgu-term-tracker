@@ -160,7 +160,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onDeleteClick(View view) {
+    public void onDeleteClick(View view) {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         alertDialog.setTitle("Confirmation");
@@ -199,7 +199,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onDeleteClick", term.getTermId()));
     }
 
-    protected void onEditClick(View view) {
+    public void onEditClick(View view) {
         Intent intent = new Intent(this, AssessmentInputActivity.class);
 
         intent.putExtra(Constants.TYPE, Constants.EDIT);
@@ -212,7 +212,7 @@ public class AssessmentViewActivity extends AppCompatActivity {
         Log.d(TAG, String.format("onEditClick", assessment.getAssessmentId()));
     }
 
-    protected void onAssessmentNoteClick(int position, long id) {
+    public void onAssessmentNoteClick(int position, long id) {
         NoteModel note = assessmentNoteListAdapter.getItem(position);
 
         Intent intent = new Intent(this, NoteViewActivity.class);
