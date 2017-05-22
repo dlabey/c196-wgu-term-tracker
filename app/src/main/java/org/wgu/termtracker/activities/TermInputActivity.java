@@ -166,6 +166,11 @@ public class TermInputActivity extends AppCompatActivity implements ValidationLi
 
                 startActivity(intent);
                 break;
+            case R.id.preferences:
+                intent = new Intent(this, PreferencesActivity.class);
+
+                startActivity(intent);
+                break;
         }
 
         return false;

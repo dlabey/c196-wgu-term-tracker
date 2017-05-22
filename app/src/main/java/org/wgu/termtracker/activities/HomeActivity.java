@@ -42,17 +42,13 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.preferences:
-                this.onPreferencesClick(item.getActionView());
+                Intent intent = new Intent(this, PreferencesActivity.class);
+
+                startActivity(intent);
                 break;
         }
 
         return false;
-    }
-
-    public void onPreferencesClick(View view) {
-        Intent intent = new Intent(this, PreferencesActivity.class);
-
-        startActivity(intent);
     }
 
     public void onManageTermsClick(View view) {

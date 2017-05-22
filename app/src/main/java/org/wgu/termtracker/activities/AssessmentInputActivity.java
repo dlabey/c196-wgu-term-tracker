@@ -82,6 +82,9 @@ public class AssessmentInputActivity extends AppCompatActivity
     @Select
     Spinner assessmentType;
 
+    @BindView(R.id.alertNotesTextView)
+    TextView alertNotes;
+
     protected PreferencesModel preferences;
 
     protected String type;
@@ -174,6 +177,15 @@ public class AssessmentInputActivity extends AppCompatActivity
             dueDate.setText(dueDateStr);
             assessmentType.setSelection(assessment.getType().getValue());
         }
+
+        if (preferences.isAssessmentAlerts()) {
+            alertNotes.setText("Alerts are currently on for assessment notifications. You will" +
+                    "get a notification based on the days before defined in preferences for the " +
+                    "due date of the assessment.");
+        } else {
+            alertNotes.setText("Alerts are currently off for assessment notifications. You can " +
+                    "change this in preferences.");
+        }
     }
 
     @Override
@@ -190,6 +202,11 @@ public class AssessmentInputActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.home:
                 intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+            case R.id.preferences:
+                intent = new Intent(this, PreferencesActivity.class);
 
                 startActivity(intent);
                 break;

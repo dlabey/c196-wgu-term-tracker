@@ -6,11 +6,6 @@
         android:id="@+id/home"
         android:icon="@mipmap/ic_launcher"
         android:title="Home"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/preferences"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Preferences"
-        app:showAsAction="never" />
 </menu>

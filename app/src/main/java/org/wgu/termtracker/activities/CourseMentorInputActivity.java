@@ -118,6 +118,11 @@ public class CourseMentorInputActivity extends AppCompatActivity implements Vali
 
                 startActivity(intent);
                 break;
+            case R.id.preferences:
+                intent = new Intent(this, PreferencesActivity.class);
+
+                startActivity(intent);
+                break;
         }
 
         return false;

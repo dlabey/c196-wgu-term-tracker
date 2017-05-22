@@ -91,6 +91,11 @@
                 android:onClick="onSaveButtonClick"
                 android:text="Save" />
 
+            <TextView
+                android:id="@+id/alertNotesTextView"
+                style="@style/AppTextViewContentStyle"
+                android:text="" />
+
         </LinearLayout>
 
     </ScrollView>

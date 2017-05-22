@@ -94,6 +94,9 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
     @Select
     Spinner status;
 
+    @BindView(R.id.alertNotesTextView)
+    TextView alertNotes;
+
     protected PreferencesModel preferences;
 
     protected String type;
@@ -209,6 +212,15 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
             dueDate.setText(dueDateStr);
             status.setSelection(course.getStatus().getValue());
         }
+
+        if (preferences.isCourseAlerts()) {
+            alertNotes.setText("Alerts are currently on for course notifications. You will get " +
+                    "a notification based on the days before defined in preferences for the " +
+                    "start and due date of the course.");
+        } else {
+            alertNotes.setText("Alerts are currently off for course notifications. You can " +
+                    "change this in preferences.");
+        }
     }
 
     @Override
@@ -225,6 +237,11 @@ public class CourseInputActivity extends AppCompatActivity implements Validator.
         switch (item.getItemId()) {
             case R.id.home:
                 intent = new Intent(this, HomeActivity.class);
+
+                startActivity(intent);
+                break;
+            case R.id.preferences:
+                intent = new Intent(this, PreferencesActivity.class);
 
                 startActivity(intent);
                 break;
